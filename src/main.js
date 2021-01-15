@@ -35,8 +35,10 @@ Hooks.on('confettiReady', () => {
 
 Hooks.on('createChatMessage', (msg) => {
     let roll = msg._roll;
+    const isRoller = msg.user.data._id == game.userId;
+    const isPublicRoll = roll && !msg.data.whisper.length;
 
-    if (roll && msg.user.data._id == game.userId) {
+    if (roll && isRoller && isPublicRoll) {
         roll = game.settings.get(mod, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
 
         if (diceSoNiceActive) {
@@ -49,7 +51,7 @@ Hooks.on('createChatMessage', (msg) => {
 
 Hooks.on('diceSoNiceRollComplete', (msgId) => {
     const roll = pendingDiceSoNiceRolls.get(msgId);
-    handleEffects(roll);
+    roll && handleEffects(roll);
     pendingDiceSoNiceRolls.delete(msgId);
 });
 
@@ -112,6 +114,6 @@ const handleConfetti = (roll) => {
     } catch {
         // Oh well, means the confetti mod isn't installed
     }
-}
+};
 
 
