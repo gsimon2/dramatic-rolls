@@ -5,7 +5,7 @@
   "author": "GS",
   "version": "1.0.0",
   "minimumCoreVersion": "0.7.0",
-  "compatibleCoreVersion": "0.7.8",
+  "compatibleCoreVersion": "0.7.9",
   "esmodules": ["./src/main.js"],
   "url": "https://github.com/gsimon2/dramatic-rolls",
   "bugs": "https://github.com/gsimon2/dramatic-rolls/issues",

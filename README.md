@@ -1,4 +1,6 @@
 # Dramatic Rolls
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/gsimon2/dramatic-rolls/latest/total?color=g)
+![Foundry Version](https://img.shields.io/badge/dynamic/json?color=orange&label=Foundry%20Version&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2Fgsimon2%2Fdramatic-rolls%2Fmain%2Fmodule.json)
 
 A simple module for [FoundryVtt](https://foundryvtt.com/) that addes a little excitement to natural 20s and natural 1s.
 
