@@ -1,0 +1,11 @@
+{
+  "name": "dramatic-rolls",
+  "title": "Dramatic Rolls",
+  "description": "",
+  "author": "GS",
+  "version": "0.0.1",
+  "download": "https://github.com/gsimon2/hide-player-ui/archive/1.0.1.zip",
+  "url": "https://github.com/gsimon2/hide-player-ui",
+  "minimumCoreVersion": "0.7.0",
+  "esmodules": ["./src/main.js"]
+}
