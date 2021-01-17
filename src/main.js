@@ -56,7 +56,7 @@ Hooks.on('diceSoNiceRollComplete', (msgId) => {
 });
 
 const isCrit = (roll) => {
-    if (roll._formula.includes('1d20')) {
+    if (roll._formula.includes('d20')) {
         if (roll.results[0] == 20) {
             return true;
         }
@@ -65,7 +65,7 @@ const isCrit = (roll) => {
 };
 
 const isFumble = (roll) => {
-    if (roll._formula.includes('1d20')) {
+    if (roll._formula.includes('d20')) {
         if (roll.results[0] == 1) {
             return true;
         }
