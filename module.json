@@ -3,14 +3,14 @@
   "title": "Dramatic Rolls",
   "description": "A simple module for FoundryVtt that addes a little excitement to natural 20s and natural 1s.",
   "author": "GS",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minimumCoreVersion": "0.7.0",
   "compatibleCoreVersion": "0.7.9",
   "esmodules": ["./src/main.js"],
   "url": "https://github.com/gsimon2/dramatic-rolls",
   "bugs": "https://github.com/gsimon2/dramatic-rolls/issues",
 	"changelog": "https://github.com/gsimon2/dramatic-rolls/releases",
-	"download": "https://github.com/gsimon2/dramatic-rolls/releases/download/1.0.1/module.zip",
+	"download": "https://github.com/gsimon2/dramatic-rolls/releases/download/1.0.2/module.zip",
 	"manifest": "https://github.com/gsimon2/dramatic-rolls/releases/latest/download/module.json",
 	"readme": "https://raw.githubusercontent.com/gsimon2/dramatic-rolls/main/README.md"
 }
