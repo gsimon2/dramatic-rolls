@@ -55,6 +55,13 @@ Hooks.on('diceSoNiceRollComplete', (msgId) => {
     pendingDiceSoNiceRolls.delete(msgId);
 });
 
+// Handles the midi-qol merge rolls onto one card setting
+Hooks.on('midi-qol.AttackRollComplete', (workflow) => {
+    let roll = workflow.attackRoll;
+    roll = game.settings.get(mod, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
+    handleEffects(roll);
+});
+
 const isCrit = (roll) => {
     if (roll._formula.includes('d20')) {
         if (roll.results[0] == 20) {
