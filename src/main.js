@@ -2,8 +2,8 @@ import soundEffectController from './soundEffectController.js';
 
 const mod = 'dramatic-rolls';
 let diceSoNiceActive = false;
-let foundryVttConfettiActive = false;
 let pendingDiceSoNiceRolls = new Map();
+const pendingQuickRolls = [];
 
 Hooks.on('init', () => {
     game.settings.register(mod, 'add-sound', {
@@ -16,21 +16,71 @@ Hooks.on('init', () => {
     });
 });
 
-Hooks.on('diceSoNiceInit', () => {
-    diceSoNiceActive = true;
-});
+Hooks.on('ready', () => {
+    if (game.modules.get('dice-so-nice')?.active) {
+        diceSoNiceActive = true;
 
-Hooks.on('confettiReady', () => {
-    foundryVttConfettiActive = true;
+        Hooks.on('diceSoNiceRollComplete', (msgId) => {
+            const roll = pendingDiceSoNiceRolls.get(msgId);
+            roll && handleEffects(roll);
+            pendingDiceSoNiceRolls.delete(msgId);
+        });
+    }
 
-    game.settings.register(mod, 'add-confetti', {
-        name: 'Add confetti to natural twenties',
-        // hint: '',
-        scope: 'world',
-        config: true,
-        default: true,
-        type: Boolean,
-    });
+    if (game.modules.get('quick-rolls')?.active) {
+        if (diceSoNiceActive && game.users.get(game.userId).isGM) {
+            ui.notifications.warn(`${mod} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${mod} effects.`);
+        }
+
+        Hooks.on('updateChatMessage', (msg, obj) => {
+            const msgId = msg.data._id;
+            if (!diceSoNiceActive && pendingQuickRolls.includes(msgId)) {
+                return;
+            }
+
+            try {
+                pendingQuickRolls.push(msgId);
+                const isRoller = msg.user.data._id == game.userId;
+                const isPublicRoll = !msg.data.whisper.length;
+                const html = $.parseHTML(obj.content)[0];
+    
+                if (isRoller && isPublicRoll && html) {
+                    const diceRolls = html.querySelectorAll('div.dice-roll');
+                    const usedDice = [...diceRolls].filter(node => !node.classList.contains('qr-discarded'))[0];
+                    const rollFormula = usedDice.querySelector('div.dice-formula')?.textContent;
+                    const rollResult = usedDice.querySelector('li.roll.d20')?.textContent;
+    
+                    if (rollFormula) {
+                        let roll = new Roll(rollFormula);
+                        roll.results = [rollResult];
+                        console.log(roll)
+                        handleEffects(roll);
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        });
+    }
+
+    if (game.modules.get('confetti')?.active) {
+        game.settings.register(mod, 'add-confetti', {
+            name: 'Add confetti to natural twenties',
+            // hint: '',
+            scope: 'world',
+            config: true,
+            default: true,
+            type: Boolean,
+        });
+    }
+
+    if (game.modules.get('midi-qol')?.active) {
+        // Handles the midi-qol merge rolls onto one card setting
+        Hooks.on('midi-qol.AttackRollComplete', (workflow) => {
+            let roll = workflow.attackRoll;
+            handleEffects(roll);
+        });
+    }
 });
 
 Hooks.on('createChatMessage', (msg) => {
@@ -39,27 +89,12 @@ Hooks.on('createChatMessage', (msg) => {
     const isPublicRoll = roll && !msg.data.whisper.length;
 
     if (roll && isRoller && isPublicRoll) {
-        roll = game.settings.get(mod, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
-
         if (diceSoNiceActive) {
             pendingDiceSoNiceRolls.set(msg.id, roll);
         } else {
             handleEffects(roll);
         }
     }
-});
-
-Hooks.on('diceSoNiceRollComplete', (msgId) => {
-    const roll = pendingDiceSoNiceRolls.get(msgId);
-    roll && handleEffects(roll);
-    pendingDiceSoNiceRolls.delete(msgId);
-});
-
-// Handles the midi-qol merge rolls onto one card setting
-Hooks.on('midi-qol.AttackRollComplete', (workflow) => {
-    let roll = workflow.attackRoll;
-    roll = game.settings.get(mod, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
-    handleEffects(roll);
 });
 
 const isCrit = (roll) => {
@@ -93,6 +128,7 @@ const attachSoundEffectIfNeeded = (roll) => {
 };
 
 const handleEffects = (roll) => {
+    roll = game.settings.get(mod, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
     handleConfetti(roll);
     playSound(roll);
 };
