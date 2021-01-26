@@ -17,34 +17,6 @@ Hooks.on('init', () => {
 });
 
 Hooks.on('ready', () => {
-    if (game.modules.get('quick-rolls')?.active) {
-        Hooks.on('updateChatMessage', (msg, obj) => {
-            const msgId = msg.data._id;
-            if (pendingQuickRolls.includes(msgId)) {
-                return;
-            }
-
-            pendingQuickRolls.push(msgId);
-            const isRoller = msg.user.data._id == game.userId;
-            const isPublicRoll = !msg.data.whisper.length;
-            const html = $.parseHTML(obj.content)[0];
-
-            if (isRoller && isPublicRoll && html) {
-                const diceRolls = html.querySelectorAll('div.dice-roll');
-                const usedDice = [...diceRolls].filter(node => !node.classList.contains('qr-discarded'))[0];
-                const rollFormula = usedDice.querySelector('div.dice-formula')?.textContent;
-                const rollResult = usedDice.querySelector('li.roll.d20')?.textContent;
-
-                if (rollFormula) {
-                    let roll = new Roll(rollFormula);
-                    roll.results = [rollResult];
-                    console.log(roll)
-                    handleEffects(roll);
-                }
-            }
-        });
-    }
-
     if (game.modules.get('dice-so-nice')?.active) {
         diceSoNiceActive = true;
 
@@ -52,6 +24,42 @@ Hooks.on('ready', () => {
             const roll = pendingDiceSoNiceRolls.get(msgId);
             roll && handleEffects(roll);
             pendingDiceSoNiceRolls.delete(msgId);
+        });
+    }
+
+    if (game.modules.get('quick-rolls')?.active) {
+        if (diceSoNiceActive && game.users.get(game.userId).isGM) {
+            ui.notifications.warn(`${mod} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${mod} effects.`);
+        }
+
+        Hooks.on('updateChatMessage', (msg, obj) => {
+            const msgId = msg.data._id;
+            if (!diceSoNiceActive && pendingQuickRolls.includes(msgId)) {
+                return;
+            }
+
+            try {
+                pendingQuickRolls.push(msgId);
+                const isRoller = msg.user.data._id == game.userId;
+                const isPublicRoll = !msg.data.whisper.length;
+                const html = $.parseHTML(obj.content)[0];
+    
+                if (isRoller && isPublicRoll && html) {
+                    const diceRolls = html.querySelectorAll('div.dice-roll');
+                    const usedDice = [...diceRolls].filter(node => !node.classList.contains('qr-discarded'))[0];
+                    const rollFormula = usedDice.querySelector('div.dice-formula')?.textContent;
+                    const rollResult = usedDice.querySelector('li.roll.d20')?.textContent;
+    
+                    if (rollFormula) {
+                        let roll = new Roll(rollFormula);
+                        roll.results = [rollResult];
+                        console.log(roll)
+                        handleEffects(roll);
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
         });
     }
 
@@ -91,7 +99,7 @@ Hooks.on('createChatMessage', (msg) => {
 
 const isCrit = (roll) => {
     if (roll._formula.includes('d20')) {
-        if (roll.results[0] > 1) {
+        if (roll.results[0] == 20) {
             return true;
         }
     }
