@@ -11,7 +11,7 @@ A simple module for [FoundryVtt](https://foundryvtt.com/) that addes a little ex
 There are no particular instructions for use. Once the module is enabled, will automatically add sound effects to natural 20s or natural 1s, when a single d20 is being rolled. 
 
 - Compatible with the [Dice So Nice!](https://foundryvtt.com/packages/dice-so-nice/) module. Holds the additional effects until the rolling animation is completed.
-  - Note: Dice So Nice now has native support for special effects on specific die rolls, please check that out as it captures the intention of this repo!
+  - Note: Dice So Nice now has native support for special effects on specific die rolls, please check that out as it captures the intention of this repo. They can still be used together though for a wider array of effects!
 
 - Compatible with the [Confetti](https://foundryvtt.com/packages/confetti/) module. Triggers the confetti effect on natural 20s.
 
