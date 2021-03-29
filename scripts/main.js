@@ -1,8 +1,8 @@
 import soundEffectController from './soundEffectController.js';
 import {registerSettings, registerConfettiSetting} from './settings.js';
+import constants from '../constants.js';
 
-export const mod = 'dramatic-rolls';
-const debugMode = false;
+const debugMode = true;
 let diceSoNiceActive = false;
 let pendingDiceSoNiceRolls = new Map();
 const pendingQuickRolls = [];
@@ -24,7 +24,7 @@ Hooks.on('ready', () => {
 
     if (game.modules.get('quick-rolls')?.active) {
         if (diceSoNiceActive && game.users.get(game.userId).isGM) {
-            ui.notifications.warn(`${mod} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${mod} effects.`);
+            ui.notifications.warn(`${constants.modName} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${modName} effects.`);
         }
 
         Hooks.on('updateChatMessage', (msg, obj) => {
@@ -116,7 +116,7 @@ const attachSoundEffectIfNeeded = (roll) => {
 };
 
 const handleEffects = (roll) => {
-    roll = game.settings.get(mod, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
+    roll = game.settings.get(constants.modName, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
     handleConfetti(roll);
     playSound(roll);
 };
@@ -136,7 +136,7 @@ const playSound = (roll) => {
 
 const handleConfetti = (roll) => {
     try {
-        if (game.settings.get(mod, 'add-confetti') && isCrit(roll)) {
+        if (game.settings.get(constants.modName, 'add-confetti') && isCrit(roll)) {
             const strength = window.confetti.confettiStrength.high;
             const shootConfettiProps = window.confetti.getShootConfettiProps(strength);
             mergeObject(shootConfettiProps, {'sound': null});

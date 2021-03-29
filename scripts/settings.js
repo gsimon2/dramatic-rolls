@@ -1,7 +1,7 @@
-import {mod} from './main.js';
+import constants from '../constants.js';
 
 export const registerSettings = () => {
-    game.settings.register(mod, 'add-sound', {
+    game.settings.register(constants.modName, 'add-sound', {
         name: 'dramatic-rolls.settings.add-sound-name',
         hint: 'dramatic-rolls.settings.add-sound-label',
         scope: 'world',
@@ -12,7 +12,7 @@ export const registerSettings = () => {
 };
 
 export const registerConfettiSetting = () => {
-    game.settings.register(mod, 'add-confetti', {
+    game.settings.register(constants.modName, 'add-confetti', {
         name: 'dramatic-rolls.settings.add-confetti-name',
         // hint: '',
         scope: 'world',
