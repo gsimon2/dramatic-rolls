@@ -1,0 +1,23 @@
+<div class="tab active" data-tab="general">
+    <form autocomplete="off" class="dramatic-rolls setting-form">
+
+        <ul>
+            {{#each critSounds}}
+                <li class="form-group" name="crits">
+                    <!-- <label>{{localize "hide-player-ui.setting-form-hide-logo-label"}}</label> -->
+                    <input type="checkbox" name="enabled" data-dtype="Boolean" {{checked this.enabled}}/>
+                    <input type="text" name="path" data-dtype="String" {{#if this.isModuleSound}}disabled{{/if}} value={{this.path}} />
+                </li>
+            {{/each}}
+        </ul>
+
+        <div class="form-group" style="margin: 10px;">
+            <button type="submit" name="submit">
+                <i class="fas fa-save"></i> {{localize "dramatic-rolls.settings-form.save"}}
+            </button>
+            <button type="button" name="reset">
+                <i class="fas fa-undo"></i> {{localize "dramatic-rolls.settings-form.reset"}}
+            </button>
+        </div>
+    </form>
+</div>

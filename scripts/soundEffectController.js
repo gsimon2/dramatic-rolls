@@ -37,14 +37,22 @@ const fumbleSoundEffectFiles = [
 ].map(fileName => `${baseSoundPath}/fumble/${fileName}`);
 
 const getCritSoundEffect = () => {
-    return critSoundEffectFiles[getRandomInt(critSoundEffectFiles.length)];
+    const sounds = game.settings.get(constants.modName, 'settings').critSounds;
+    const enabledSounds = sounds.filter(s => s.enabled);
+    const selectedSound = enabledSounds[getRandomInt(enabledSounds.length)];
+    return selectedSound.path;
 };
 
 const getFumbleSoundEffect = () => {
-    return fumbleSoundEffectFiles[getRandomInt(fumbleSoundEffectFiles.length)];
+    const sounds = game.settings.get(constants.modName, 'settings').fumbleSounds;
+    const enabledSounds = sounds.filter(s => s.enabled);
+    const selectedSound = enabledSounds[getRandomInt(enabledSounds.length)];
+    return selectedSound.path;
 };
 
 export default {
+    critSoundEffectFiles,
+    fumbleSoundEffectFiles,
     getCritSoundEffect,
     getFumbleSoundEffect
 }

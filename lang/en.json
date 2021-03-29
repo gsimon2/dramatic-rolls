@@ -1,5 +1,23 @@
 {
-    "dramatic-rolls.settings.add-sound-name": "Add Sound Effects",
-    "dramatic-rolls.settings.add-sound-label": "Add sound effect to natural twenties and natural ones",
-    "dramatic-rolls.settings.add-confetti-name": "Add confetti to natural twenties"
+    "dramatic-rolls": {
+        "settings": {
+            "add-sound": {
+                "name": "Add Sound Effects",
+                "label": "Add sound effect to natural twenties and natural ones"
+            },
+            "add-confetti": {
+                "name": "Add confetti to natural twenties",
+                "label": ""
+            },
+            "configure-sounds": {
+                "name": "Configure Sounds",
+                "label": "Configure which sounds play on crits and fumbles"
+            }
+        },
+        "settings-form": {
+            "title": "Configure Sounds",
+            "save": "Save Changes",
+            "reset": "Reset Defaults"
+        }
+    }
 }
