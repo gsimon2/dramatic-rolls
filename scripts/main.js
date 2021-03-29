@@ -1,19 +1,13 @@
 import soundEffectController from './soundEffectController.js';
+import {registerSettings, registerConfettiSetting} from './settings.js';
 
-const mod = 'dramatic-rolls';
+export const mod = 'dramatic-rolls';
 let diceSoNiceActive = false;
 let pendingDiceSoNiceRolls = new Map();
 const pendingQuickRolls = [];
 
 Hooks.on('init', () => {
-    game.settings.register(mod, 'add-sound', {
-        name: 'Add sound effect to natural twenties and natural ones',
-        // hint: '',
-        scope: 'world',
-        config: true,
-        default: true,
-        type: Boolean,
-    });
+    registerSettings();
 });
 
 Hooks.on('ready', () => {
@@ -64,14 +58,7 @@ Hooks.on('ready', () => {
     }
 
     if (game.modules.get('confetti')?.active) {
-        game.settings.register(mod, 'add-confetti', {
-            name: 'Add confetti to natural twenties',
-            // hint: '',
-            scope: 'world',
-            config: true,
-            default: true,
-            type: Boolean,
-        });
+        registerConfettiSetting();
     }
 
     if (game.modules.get('midi-qol')?.active) {
