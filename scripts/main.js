@@ -23,7 +23,7 @@ Hooks.on('ready', () => {
 
     if (game.modules.get('quick-rolls')?.active) {
         if (diceSoNiceActive && game.users.get(game.userId).isGM) {
-            ui.notifications.warn(`${constants.modName} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${modName} effects.`);
+            ui.notifications.warn(`${constants.modName} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${constants.modName} effects.`);
         }
 
         Hooks.on('updateChatMessage', (msg, obj) => {
