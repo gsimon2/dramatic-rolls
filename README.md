@@ -8,7 +8,7 @@ A simple module for [FoundryVtt](https://foundryvtt.com/) that addes a little ex
 ![](natty20.gif)
 
 ## Usage Instructions
-There are no particular instructions for use. Once the module is enabled, will automatically add sound effects to natural 20s or natural 1s, when a single d20 is being rolled. 
+By default this module comes with a sets of sounds that will be triggered on either natural 20s or 1s. These sounds can be configured via the "Configure Settings" menu. Custom sounds can also be added, but the file must be located under the `FoundryVtt/Data` directory. To add sounds go to "Configure Settings -> Module Settings" and open the Dramatic Rolls "Configure Sounds" menu. 
 
 - Compatible with the [Dice So Nice!](https://foundryvtt.com/packages/dice-so-nice/) module. Holds the additional effects until the rolling animation is completed.
   - Note: Dice So Nice now has native support for special effects on specific die rolls, please check that out as it captures the intention of this repo. They can still be used together though for a wider array of effects!
