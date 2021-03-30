@@ -32,6 +32,9 @@ export class DramaticRollsSettingsForm extends FormApplication {
         this.data.critSounds.forEach((soundObject, index) => {
             html.find(`button[id="play-crit-sound-${index}`).click(((e) => this.onPlaySound(e, soundObject.path)).bind(this));
         });
+        this.data.fumbleSounds.forEach((soundObject, index) => {
+            html.find(`button[id="play-fumble-sound-${index}`).click(((e) => this.onPlaySound(e, soundObject.path)).bind(this));
+        });
     }
 
     onReset() {
@@ -53,8 +56,10 @@ export class DramaticRollsSettingsForm extends FormApplication {
     _updateObject(events, formData) {
         const currentSettings = game.settings.get(constants.modName, 'settings');
         const critSounds = formData.critEnabled.map((ce, index) => Object.assign({}, currentSettings.critSounds[index], {enabled: ce}));
+        const fumbleSounds = formData.fumbleEnabled.map((fe, index) => Object.assign({}, currentSettings.fumbleSounds[index], {enabled: fe}));
         let updatedSettings = {
-            critSounds
+            critSounds,
+            fumbleSounds
         };
 
         updatedSettings = mergeObject(currentSettings, updatedSettings, {insertKeys: true, insertValues: true});

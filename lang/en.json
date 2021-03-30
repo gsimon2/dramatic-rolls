@@ -18,7 +18,8 @@
             "title": "Configure Sounds",
             "save": "Save Changes",
             "reset": "Reset Defaults",
-            "critical-sounds-list-title": "Critical Sound Effects"
+            "critical-sounds-list-title": "Critical Sound Effects",
+            "fumble-sounds-list-title": "Fumble Sound Effects"
         }
     }
 }
