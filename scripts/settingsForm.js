@@ -25,6 +25,8 @@ export class DramaticRollsSettingsForm extends FormApplication {
             this.storedSettings = game.settings.get(constants.modName, 'settings');
         }
 
+        console.log(this.storedSettings, defaultSettings)
+
         const data = mergeObject(nonSettingData, this.reset ? defaultSettings : this.storedSettings);
         this.data = data;
         return data;
@@ -38,6 +40,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
         html.find('button[id="add-fumble-sound-button"]').click(((e) => this.simulateFumbleInputClick(e)).bind(this));
         html.find('input[id="add-fumble-sound-input"]').change(((e) => this.onAddFumble(e)).bind(this));
         this.bindPlaySoundButtons(html);
+        this.bindRemoveSoundButtons(html);
         this.reset = false;
     }
 
@@ -61,6 +64,32 @@ export class DramaticRollsSettingsForm extends FormApplication {
         });
         this.data.fumbleSounds.forEach((soundObject, index) => {
             html.find(`button[id="play-fumble-sound-${index}`).click(((e) => this.onPlaySound(e, soundObject.path)).bind(this));
+        });
+    }
+
+    bindRemoveSoundButtons(html) {
+        this.data.critSounds.forEach((soundObject, index) => {
+            if (soundObject.isUserAddedSound) {
+                html.find(`button[id="delete-crit-sound-${index}`).click(((e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.updateStoredSettingsFromForm();
+                    this.storedSettings.critSounds.splice(index, 1);
+                    this.render();
+                }).bind(this));
+            }
+        });
+
+        this.data.fumbleSounds.forEach((soundObject, index) => {
+            if (soundObject.isUserAddedSound) {
+                html.find(`button[id="delete-fumble-sound-${index}`).click(((e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.updateStoredSettingsFromForm();
+                    this.storedSettings.fumbleSounds.splice(index, 1);
+                    this.render();
+                }).bind(this));
+            }
         });
     }
 
@@ -88,7 +117,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
             return;
         }
         this.updateStoredSettingsFromForm()
-        this.storedSettings.critSounds.push({enabled: true, path: newFilePath, isModuleSound: false});
+        this.storedSettings.critSounds.push({enabled: true, path: newFilePath, isUserAddedSound: true});
         this.render();
         this.scrollToBottom('#crit-sounds-list');
     }
@@ -112,7 +141,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
             return;
         }
         this.updateStoredSettingsFromForm()
-        this.storedSettings.fumbleSounds.push({enabled: true, path: newFilePath, isModuleSound: false});
+        this.storedSettings.fumbleSounds.push({enabled: true, path: newFilePath, isUserAddedSound: true});
         this.render();
         this.scrollToBottom('#fumble-sounds-list');
     }

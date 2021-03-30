@@ -19,6 +19,7 @@
             "save": "Save Changes",
             "reset": "Reset Defaults",
             "playSound": "Play Sound",
+            "removeSound": "Remove Sound",
             "enableDisableSound": "Enabled / Disable Sound",
             "fileLinkError": "Error while adding sound effect. Please make sure the file is under the \"FoundryVTT\\Data\" directory.",
             "addCritSound": "Add Critical Sound Effect",
