@@ -1,8 +1,11 @@
 <div class="tab active" data-tab="general">
     <form autocomplete="off" class="dramatic-rolls setting-form">
+        {{#if hasFileLinkError}}
+            <div class="error-text"><span>{{localize "dramatic-rolls.settings-form.fileLinkError"}}</span></div>
+        {{/if}}
 
         <span class="list-header">{{localize "dramatic-rolls.settings-form.critical-sounds-list-title"}}</span>
-        <ul>
+        <ul id="crit-sounds-list">
             {{#each critSounds}}
                 <li class="form-group sound-option-group">
                     <input type="checkbox" name="critEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
@@ -13,9 +16,12 @@
                 </li>
             {{/each}}
         </ul>
+        <div class="upload-button-wrapper">
+            <input type="file" id="upload-crit-sound-input" accept="{{acceptedSoundFormats}}" />
+            <button id="upload-crit-sound-button">{{localize "dramatic-rolls.settings-form.uploadCritSound"}}</button>
+            <div><span class="notes">{{localize "dramatic-rolls.settings-form.added-files-requirement"}}</span></div>
+        </div>
         
-        <br/>
-
         <span class="list-header">{{localize "dramatic-rolls.settings-form.fumble-sounds-list-title"}}</span>
         <ul>
             {{#each fumbleSounds}}

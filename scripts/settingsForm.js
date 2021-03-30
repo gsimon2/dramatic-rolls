@@ -12,11 +12,20 @@ export class DramaticRollsSettingsForm extends FormApplication {
         });
     }
 
+    storedSettings = {};
+    hasFileLinkError = false;
+
     getData(options) {
-        const staticData = {
+        const nonSettingData = {
+            acceptedSoundFormats: "audio/mpeg,audio/ogg,audio/x-flac,audio/flac,audio/wav,audio/webm",
+            hasFileLinkError: this.hasFileLinkError
         };
 
-        const data = mergeObject(staticData, this.reset ? defaultSettings : game.settings.get(constants.modName, 'settings'));
+        if ($.isEmptyObject(this.storedSettings)) {
+            this.storedSettings = game.settings.get(constants.modName, 'settings');
+        }
+
+        const data = mergeObject(nonSettingData, this.reset ? defaultSettings : this.storedSettings);
         this.data = data;
         return data;
     }
@@ -24,8 +33,17 @@ export class DramaticRollsSettingsForm extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
         html.find('button[name="reset"]').click(this.onReset.bind(this));
+        html.find('button[id="upload-crit-sound-button"]').click(((e) => this.simulateCritInputClick(e)).bind(this));
+        html.find('input[id="upload-crit-sound-input"]').change(((e) => this.onAddCrit(e)).bind(this));
         this.bindPlaySoundButtons(html);
         this.reset = false;
+    }
+
+    simulateCritInputClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.hasFileLinkError = false;
+        $('#upload-crit-sound-input').click();
     }
 
     bindPlaySoundButtons(html) {
@@ -42,6 +60,49 @@ export class DramaticRollsSettingsForm extends FormApplication {
         this.render();
     }
 
+    onAddCrit(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let newFilePath = ""
+
+        try {
+            newFilePath = e.target.files[0].path;
+            newFilePath = newFilePath.split('FoundryVTT\\Data')[1];
+            
+            if (!newFilePath) {
+                throw new Error("Invalid file path - Most likely file is not under the FoundryVTT/Data directory");
+            }
+        } catch (e) {
+            this.hasFileLinkError = true;
+            console.error('Failed to get file path', e);
+            this.render();
+            return;
+        }
+        this.updateStoredSettingsFromForm()
+        this.storedSettings.critSounds.push({enabled: true, path: newFilePath, isModuleSound: false});
+        this.render();
+        this.scrollToBottom('#crit-sounds-list');
+    }
+
+    scrollToBottom(selector) {
+        setTimeout(() => {
+            $(selector).scrollTop($(selector)[0].scrollHeight);
+        }, 100);
+    }
+
+    updateStoredSettingsFromForm() {
+        const critSoundsEnabled = Array.from($(this.form).find('input[name="critEnabled"]')).map(inputElement => inputElement.checked);
+        const critSounds = critSoundsEnabled.map((ce, index) => Object.assign({}, this.storedSettings.critSounds[index], {enabled: ce}));
+
+        const fumbleSoundsEnabled = Array.from($(this.form).find('input[name="fumbleEnabled"]')).map(inputElement => inputElement.checked);
+        const fumbleSounds = fumbleSoundsEnabled.map((fe, index) => Object.assign({}, this.storedSettings.fumbleSounds[index], {enabled: fe}));
+        
+        this.storedSettings = {
+            critSounds,
+            fumbleSounds
+        };
+    }
+
     onPlaySound(e, soundPath) {
         e.preventDefault();
         e.stopPropagation();
@@ -54,7 +115,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
     }
 
     _updateObject(events, formData) {
-        const currentSettings = game.settings.get(constants.modName, 'settings');
+        const currentSettings = this.storedSettings;
         const critSounds = formData.critEnabled.map((ce, index) => Object.assign({}, currentSettings.critSounds[index], {enabled: ce}));
         const fumbleSounds = formData.fumbleEnabled.map((fe, index) => Object.assign({}, currentSettings.fumbleSounds[index], {enabled: fe}));
         let updatedSettings = {

@@ -8,6 +8,7 @@
 }
 
 .dramatic-rolls.setting-form .sound-option-group {
+    flex-wrap: nowrap;
     padding-bottom: 0.5rem;
 }
 
@@ -44,4 +45,18 @@
     width: 2rem;
     height: 1.75rem;
     box-sizing: border-box;
+}
+
+.dramatic-rolls.setting-form .upload-button-wrapper {
+    width: 21rem;
+    margin: 1rem auto;
+}
+
+.dramatic-rolls.setting-form .upload-button-wrapper input {
+    display: none;
+}
+
+.dramatic-rolls.setting-form .error-text {
+    color: red;
+    margin-bottom: 1rem;
 }
