@@ -144,7 +144,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
             volume: 0.8,
             autoplay: true,
             loop: false
-        }, true);
+        }, false);
     }
 
     _updateObject(events, formData) {
