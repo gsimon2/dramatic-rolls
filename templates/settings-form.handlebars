@@ -23,7 +23,7 @@
         </div>
         
         <span class="list-header">{{localize "dramatic-rolls.settings-form.fumble-sounds-list-title"}}</span>
-        <ul>
+        <ul id="fumble-sounds-list">
             {{#each fumbleSounds}}
                 <li class="form-group sound-option-group">
                     <input type="checkbox" name="fumbleEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
@@ -34,6 +34,11 @@
                 </li>
             {{/each}}
         </ul>
+        <div class="upload-button-wrapper">
+            <input type="file" id="upload-fumble-sound-input" accept="{{acceptedSoundFormats}}" />
+            <button id="upload-fumble-sound-button">{{localize "dramatic-rolls.settings-form.uploadFumbleSound"}}</button>
+            <div><span class="notes">{{localize "dramatic-rolls.settings-form.added-files-requirement"}}</span></div>
+        </div>
 
         <div class="form-group" style="margin: 10px;">
             <button type="submit" name="submit">

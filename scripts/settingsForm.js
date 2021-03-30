@@ -35,6 +35,8 @@ export class DramaticRollsSettingsForm extends FormApplication {
         html.find('button[name="reset"]').click(this.onReset.bind(this));
         html.find('button[id="upload-crit-sound-button"]').click(((e) => this.simulateCritInputClick(e)).bind(this));
         html.find('input[id="upload-crit-sound-input"]').change(((e) => this.onAddCrit(e)).bind(this));
+        html.find('button[id="upload-fumble-sound-button"]').click(((e) => this.simulateFumbleInputClick(e)).bind(this));
+        html.find('input[id="upload-fumble-sound-input"]').change(((e) => this.onAddFumble(e)).bind(this));
         this.bindPlaySoundButtons(html);
         this.reset = false;
     }
@@ -44,6 +46,13 @@ export class DramaticRollsSettingsForm extends FormApplication {
         e.stopPropagation();
         this.hasFileLinkError = false;
         $('#upload-crit-sound-input').click();
+    }
+
+    simulateFumbleInputClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.hasFileLinkError = false;
+        $('#upload-fumble-sound-input').click();
     }
 
     bindPlaySoundButtons(html) {
@@ -82,6 +91,30 @@ export class DramaticRollsSettingsForm extends FormApplication {
         this.storedSettings.critSounds.push({enabled: true, path: newFilePath, isModuleSound: false});
         this.render();
         this.scrollToBottom('#crit-sounds-list');
+    }
+
+    onAddFumble(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let newFilePath = ""
+
+        try {
+            newFilePath = e.target.files[0].path;
+            newFilePath = newFilePath.split('FoundryVTT\\Data')[1];
+            
+            if (!newFilePath) {
+                throw new Error("Invalid file path - Most likely file is not under the FoundryVTT/Data directory");
+            }
+        } catch (e) {
+            this.hasFileLinkError = true;
+            console.error('Failed to get file path', e);
+            this.render();
+            return;
+        }
+        this.updateStoredSettingsFromForm()
+        this.storedSettings.fumbleSounds.push({enabled: true, path: newFilePath, isModuleSound: false});
+        this.render();
+        this.scrollToBottom('#fumble-sounds-list');
     }
 
     scrollToBottom(selector) {
