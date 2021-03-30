@@ -9,7 +9,7 @@
             {{#each critSounds}}
                 <li class="form-group sound-option-group">
                     <input type="checkbox" name="critEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
-                    <input type="text" data-dtype="String" class="sound-path-input" {{#if this.isModuleSound}}readonly{{/if}} value={{this.path}} title="{{this.path}}" />
+                    <input type="text" data-dtype="String" class="sound-path-input" value={{this.path}} title="{{this.path}}" readonly />
                     <button id="play-crit-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
                         <i class="fas fa-play-circle"></i>
                     </button>
@@ -27,7 +27,7 @@
             {{#each fumbleSounds}}
                 <li class="form-group sound-option-group">
                     <input type="checkbox" name="fumbleEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
-                    <input type="text" data-dtype="String" class="sound-path-input" {{#if this.isModuleSound}}readonly{{/if}} value={{this.path}} title="{{this.path}}" />
+                    <input type="text" data-dtype="String" class="sound-path-input" readonly value={{this.path}} title="{{this.path}}" readonly />
                     <button id="play-fumble-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
                         <i class="fas fa-play-circle"></i>
                     </button>
