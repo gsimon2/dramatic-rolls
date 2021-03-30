@@ -1,19 +1,13 @@
 import soundEffectController from './soundEffectController.js';
+import {registerSettings, registerConfettiSetting} from './settings.js';
+import constants from '../constants.js';
 
-const mod = 'dramatic-rolls';
 let diceSoNiceActive = false;
 let pendingDiceSoNiceRolls = new Map();
 const pendingQuickRolls = [];
 
 Hooks.on('init', () => {
-    game.settings.register(mod, 'add-sound', {
-        name: 'Add sound effect to natural twenties and natural ones',
-        // hint: '',
-        scope: 'world',
-        config: true,
-        default: true,
-        type: Boolean,
-    });
+    registerSettings();
 });
 
 Hooks.on('ready', () => {
@@ -29,7 +23,7 @@ Hooks.on('ready', () => {
 
     if (game.modules.get('quick-rolls')?.active) {
         if (diceSoNiceActive && game.users.get(game.userId).isGM) {
-            ui.notifications.warn(`${mod} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${mod} effects.`);
+            ui.notifications.warn(`${constants.modName} only offers limited support for quick-rolls and dice-so-nice being used together. On advantage and disadvantage rolls, both die will trigger ${constants.modName} effects.`);
         }
 
         Hooks.on('updateChatMessage', (msg, obj) => {
@@ -64,14 +58,7 @@ Hooks.on('ready', () => {
     }
 
     if (game.modules.get('confetti')?.active) {
-        game.settings.register(mod, 'add-confetti', {
-            name: 'Add confetti to natural twenties',
-            // hint: '',
-            scope: 'world',
-            config: true,
-            default: true,
-            type: Boolean,
-        });
+        registerConfettiSetting();
     }
 
     if (game.modules.get('midi-qol')?.active) {
@@ -99,7 +86,7 @@ Hooks.on('createChatMessage', (msg) => {
 
 const isCrit = (roll) => {
     if (roll._formula.includes('d20')) {
-        if (roll.results[0] == 20) {
+        if (roll.results[0] == 20 || constants.debugMode) {
             return true;
         }
     }
@@ -128,7 +115,7 @@ const attachSoundEffectIfNeeded = (roll) => {
 };
 
 const handleEffects = (roll) => {
-    roll = game.settings.get(mod, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
+    roll = game.settings.get(constants.modName, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
     handleConfetti(roll);
     playSound(roll);
 };
@@ -148,7 +135,7 @@ const playSound = (roll) => {
 
 const handleConfetti = (roll) => {
     try {
-        if (game.settings.get(mod, 'add-confetti') && isCrit(roll)) {
+        if (game.settings.get(constants.modName, 'add-confetti') && isCrit(roll)) {
             const strength = window.confetti.confettiStrength.high;
             const shootConfettiProps = window.confetti.getShootConfettiProps(strength);
             mergeObject(shootConfettiProps, {'sound': null});

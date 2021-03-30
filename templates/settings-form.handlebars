@@ -1,0 +1,63 @@
+<div class="tab active" data-tab="general">
+    <form autocomplete="off" class="dramatic-rolls setting-form">
+        {{#if hasFileLinkError}}
+            <div class="error-text"><span>{{localize "dramatic-rolls.settings-form.fileLinkError"}}</span></div>
+        {{/if}}
+
+        <span class="list-header">{{localize "dramatic-rolls.settings-form.critical-sounds-list-title"}}</span>
+        <ul id="crit-sounds-list">
+            {{#each critSounds}}
+                <li class="form-group sound-option-group">
+                    <input type="checkbox" name="critEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
+                    <input type="text" data-dtype="String" class="sound-path-input" value={{this.path}} title="{{this.path}}" readonly />
+                    {{#if this.isUserAddedSound}}
+                        <button id="delete-crit-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.removeSound"}}">
+                            <i class="fas fa-minus-circle"></i>
+                        </button>
+                    {{/if}}
+                    <button id="play-crit-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
+                        <i class="fas fa-play-circle"></i>
+                    </button>
+
+                </li>
+            {{/each}}
+        </ul>
+        <div class="add-button-wrapper">
+            <input type="file" id="add-crit-sound-input" accept="{{acceptedSoundFormats}}" />
+            <button id="add-crit-sound-button">{{localize "dramatic-rolls.settings-form.addCritSound"}}</button>
+            <div><span class="notes">{{localize "dramatic-rolls.settings-form.added-files-requirement"}}</span></div>
+        </div>
+        
+        <span class="list-header">{{localize "dramatic-rolls.settings-form.fumble-sounds-list-title"}}</span>
+        <ul id="fumble-sounds-list">
+            {{#each fumbleSounds}}
+                <li class="form-group sound-option-group">
+                    <input type="checkbox" name="fumbleEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
+                    <input type="text" data-dtype="String" class="sound-path-input" readonly value={{this.path}} title="{{this.path}}" readonly />
+                    {{#if this.isUserAddedSound}}
+                        <button id="delete-fumble-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.removeSound"}}">
+                            <i class="fas fa-minus-circle"></i>
+                        </button>
+                    {{/if}}
+                    <button id="play-fumble-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
+                        <i class="fas fa-play-circle"></i>
+                    </button>
+                </li>
+            {{/each}}
+        </ul>
+        <div class="add-button-wrapper">
+            <input type="file" id="add-fumble-sound-input" accept="{{acceptedSoundFormats}}" />
+            <button id="add-fumble-sound-button">{{localize "dramatic-rolls.settings-form.addFumbleSound"}}</button>
+            <div><span class="notes">{{localize "dramatic-rolls.settings-form.added-files-requirement"}}</span></div>
+        </div>
+
+        <div class="form-group" style="margin: 10px;">
+            <button type="submit" name="submit">
+                <i class="fas fa-save"></i> {{localize "dramatic-rolls.settings-form.save"}}
+            </button>
+            <button type="button" name="reset">
+                <i class="fas fa-undo"></i> {{localize "dramatic-rolls.settings-form.reset"}}
+            </button>
+        </div>
+    </form>
+</div>

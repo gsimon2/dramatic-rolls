@@ -1,0 +1,63 @@
+.dramatic-rolls.setting-form ul {
+    padding: 0;
+    max-height: 18rem;
+    overflow: auto;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    box-shadow: inset 0 -10px 10px -10px #3a3939;
+}
+
+.dramatic-rolls.setting-form .sound-option-group {
+    flex-wrap: nowrap;
+    padding-bottom: 0.5rem;
+}
+
+.dramatic-rolls.setting-form .list-header {
+    font-size: 1.25rem;
+}
+
+.dramatic-rolls.setting-form .sound-option-group .sound-path-input {
+    flex: 1 1 auto;
+    max-width: 25rem;
+    margin-right: 0.5rem;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    direction: rtl;
+    text-align: left;
+}
+
+.sound-path-input[readonly] {
+    opacity: 0.8;
+    cursor: default;
+}
+
+.sound-path-input[readonly]:focus {
+    box-shadow: none;
+}
+
+.dramatic-rolls.setting-form .sound-option-group button {
+    flex: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 1.75rem;
+    box-sizing: border-box;
+    margin-right: 0.375rem;
+}
+
+.dramatic-rolls.setting-form .add-button-wrapper {
+    width: 21rem;
+    margin: 1rem auto;
+}
+
+.dramatic-rolls.setting-form .add-button-wrapper input {
+    display: none;
+}
+
+.dramatic-rolls.setting-form .error-text {
+    color: red;
+    margin-bottom: 1rem;
+}

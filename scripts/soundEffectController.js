@@ -1,5 +1,6 @@
-const mod = 'dramatic-rolls';
-const baseSoundPath = `modules/${mod}/sounds`;
+import constants from '../constants.js';
+
+const baseSoundPath = `modules/${constants.modName}/sounds`;
 
 // Returns random int between 0 and max (exclusive)
 const getRandomInt = (max) => {
@@ -18,7 +19,7 @@ const critSoundEffectFiles = [
     'laughing-audience-clapping.mp3',
     'level-complete-magical-sparkle.mp3',
     'magical-twinkle-sparkle-whoosh.mp3'
-];
+].map(fileName => `${baseSoundPath}/crit/${fileName}`);
 
 const fumbleSoundEffectFiles = [
     'boing.mp3',
@@ -33,21 +34,25 @@ const fumbleSoundEffectFiles = [
     'power-down.mp3',
     'tire-screech.mp3',
     'video-game-game-over.mp3'
-];
+].map(fileName => `${baseSoundPath}/fumble/${fileName}`);
 
 const getCritSoundEffect = () => {
-    const directoryName = 'crit';
-    const fileName = critSoundEffectFiles[getRandomInt(critSoundEffectFiles.length)];
-    return `${baseSoundPath}/${directoryName}/${fileName}`;
+    const sounds = game.settings.get(constants.modName, 'settings').critSounds;
+    const enabledSounds = sounds.filter(s => s.enabled);
+    const selectedSound = enabledSounds[getRandomInt(enabledSounds.length)];
+    return selectedSound?.path || "";
 };
 
 const getFumbleSoundEffect = () => {
-    const directoryName = 'fumble';
-    const fileName = fumbleSoundEffectFiles[getRandomInt(fumbleSoundEffectFiles.length)];
-    return `${baseSoundPath}/${directoryName}/${fileName}`;
+    const sounds = game.settings.get(constants.modName, 'settings').fumbleSounds;
+    const enabledSounds = sounds.filter(s => s.enabled);
+    const selectedSound = enabledSounds[getRandomInt(enabledSounds.length)];
+    return selectedSound?.path || "";
 };
 
 export default {
+    critSoundEffectFiles,
+    fumbleSoundEffectFiles,
     getCritSoundEffect,
     getFumbleSoundEffect
 }
