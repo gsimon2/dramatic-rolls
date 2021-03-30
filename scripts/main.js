@@ -2,7 +2,6 @@ import soundEffectController from './soundEffectController.js';
 import {registerSettings, registerConfettiSetting} from './settings.js';
 import constants from '../constants.js';
 
-const debugMode = true;
 let diceSoNiceActive = false;
 let pendingDiceSoNiceRolls = new Map();
 const pendingQuickRolls = [];
@@ -87,7 +86,7 @@ Hooks.on('createChatMessage', (msg) => {
 
 const isCrit = (roll) => {
     if (roll._formula.includes('d20')) {
-        if (roll.results[0] == 20 || debugMode) {
+        if (roll.results[0] == 20 || constants.debugMode) {
             return true;
         }
     }
