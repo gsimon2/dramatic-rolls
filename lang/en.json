@@ -18,6 +18,8 @@
             "title": "Configure Sounds",
             "save": "Save Changes",
             "reset": "Reset Defaults",
+            "playSound": "Play Sound",
+            "enableDisableSound": "Enabled / Disable Sound",
             "critical-sounds-list-title": "Critical Sound Effects",
             "fumble-sounds-list-title": "Fumble Sound Effects"
         }
