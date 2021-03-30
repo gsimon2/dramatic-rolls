@@ -17,7 +17,8 @@
         "settings-form": {
             "title": "Configure Sounds",
             "save": "Save Changes",
-            "reset": "Reset Defaults"
+            "reset": "Reset Defaults",
+            "critical-sounds-list-title": "Critical Sound Effects"
         }
     }
 }

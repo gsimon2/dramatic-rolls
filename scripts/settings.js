@@ -7,8 +7,6 @@ export const defaultSettings = {
     fumbleSounds: soundEffectController.fumbleSoundEffectFiles.map(soundFilePath => ({enabled: true, path: soundFilePath, isModuleSound: true}))
 };
 
-console.log('Settings', defaultSettings)
-
 export const registerSettings = () => {
     game.settings.register(constants.modName, 'add-sound', {
         name: 'dramatic-rolls.settings.add-sound.name',
