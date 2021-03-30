@@ -33,10 +33,10 @@ export class DramaticRollsSettingsForm extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
         html.find('button[name="reset"]').click(this.onReset.bind(this));
-        html.find('button[id="upload-crit-sound-button"]').click(((e) => this.simulateCritInputClick(e)).bind(this));
-        html.find('input[id="upload-crit-sound-input"]').change(((e) => this.onAddCrit(e)).bind(this));
-        html.find('button[id="upload-fumble-sound-button"]').click(((e) => this.simulateFumbleInputClick(e)).bind(this));
-        html.find('input[id="upload-fumble-sound-input"]').change(((e) => this.onAddFumble(e)).bind(this));
+        html.find('button[id="add-crit-sound-button"]').click(((e) => this.simulateCritInputClick(e)).bind(this));
+        html.find('input[id="add-crit-sound-input"]').change(((e) => this.onAddCrit(e)).bind(this));
+        html.find('button[id="add-fumble-sound-button"]').click(((e) => this.simulateFumbleInputClick(e)).bind(this));
+        html.find('input[id="add-fumble-sound-input"]').change(((e) => this.onAddFumble(e)).bind(this));
         this.bindPlaySoundButtons(html);
         this.reset = false;
     }
@@ -45,14 +45,14 @@ export class DramaticRollsSettingsForm extends FormApplication {
         e.preventDefault();
         e.stopPropagation();
         this.hasFileLinkError = false;
-        $('#upload-crit-sound-input').click();
+        $('#add-crit-sound-input').click();
     }
 
     simulateFumbleInputClick(e) {
         e.preventDefault();
         e.stopPropagation();
         this.hasFileLinkError = false;
-        $('#upload-fumble-sound-input').click();
+        $('#add-fumble-sound-input').click();
     }
 
     bindPlaySoundButtons(html) {

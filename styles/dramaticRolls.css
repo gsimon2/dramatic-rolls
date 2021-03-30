@@ -47,12 +47,12 @@
     box-sizing: border-box;
 }
 
-.dramatic-rolls.setting-form .upload-button-wrapper {
+.dramatic-rolls.setting-form .add-button-wrapper {
     width: 21rem;
     margin: 1rem auto;
 }
 
-.dramatic-rolls.setting-form .upload-button-wrapper input {
+.dramatic-rolls.setting-form .add-button-wrapper input {
     display: none;
 }
 

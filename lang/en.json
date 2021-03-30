@@ -21,8 +21,8 @@
             "playSound": "Play Sound",
             "enableDisableSound": "Enabled / Disable Sound",
             "fileLinkError": "Error while adding sound effect. Please make sure the file is under the \"FoundryVTT\\Data\" directory.",
-            "uploadCritSound": "Add Critical Sound Effect",
-            "uploadFumbleSound": "Add Fumble Sound Effect",
+            "addCritSound": "Add Critical Sound Effect",
+            "addFumbleSound": "Add Fumble Sound Effect",
             "critical-sounds-list-title": "Critical Sound Effects",
             "fumble-sounds-list-title": "Fumble Sound Effects",
             "added-files-requirement": "Files must be located under the \"FoundryVTT\\Data\" directory."
