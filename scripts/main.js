@@ -44,10 +44,9 @@ Hooks.on('ready', () => {
                     const rollFormula = usedDice.querySelector('div.dice-formula')?.textContent;
                     const rollResult = usedDice.querySelector('li.roll.d20')?.textContent;
     
-                    if (rollFormula) {
+                    if (rollFormula && !disableDueToNPC(msg.data.speaker)) {
                         let roll = new Roll(rollFormula);
                         roll.results = [rollResult];
-                        console.log(roll)
                         handleEffects(roll);
                     }
                 }
@@ -65,7 +64,7 @@ Hooks.on('ready', () => {
         // Handles the midi-qol merge rolls onto one card setting
         Hooks.on('midi-qol.AttackRollComplete', (workflow) => {
             let roll = workflow.attackRoll;
-            handleEffects(roll);
+            !disableDueToNPC(workflow.speaker) && handleEffects(roll);
         });
     }
 });
@@ -75,7 +74,7 @@ Hooks.on('createChatMessage', (msg) => {
     const isRoller = msg.user.data._id == game.userId;
     const isPublicRoll = roll && !msg.data.whisper.length;
 
-    if (roll && isRoller && isPublicRoll) {
+    if (roll && isRoller && isPublicRoll && !disableDueToNPC(msg.data.speaker)) {
         if (diceSoNiceActive) {
             pendingDiceSoNiceRolls.set(msg.id, roll);
         } else {
@@ -83,6 +82,15 @@ Hooks.on('createChatMessage', (msg) => {
         }
     }
 });
+
+const disableDueToNPC = (speaker) => {
+    const settingEnabld = game.settings.get(constants.modName, 'disable-npc-rolls')
+    const actor = ChatMessage.getSpeakerActor(speaker);
+    const actorHasPlayerOwner = actor ? actor.hasPlayerOwner : false;
+    const isGM = game.users.get(game.userId).isGM;
+
+    return  settingEnabld && (!actorHasPlayerOwner && isGM);
+};
 
 const isCrit = (roll) => {
     if (roll._formula.includes('d20')) {

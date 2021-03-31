@@ -33,6 +33,15 @@ export const registerSettings = () => {
         type: Object,
         config: false
     });
+
+    game.settings.register(constants.modName, 'disable-npc-rolls', {
+        name: 'dramatic-rolls.settings.disable-npc-rolls.name',
+        hint: 'dramatic-rolls.settings.disable-npc-rolls.label',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean,
+    });
 };
 
 export const registerConfettiSetting = () => {

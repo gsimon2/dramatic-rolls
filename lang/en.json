@@ -12,6 +12,10 @@
             "configure-sounds": {
                 "name": "Configure Sounds",
                 "label": "Configure which sounds play on crits and fumbles"
+            },
+            "disable-npc-rolls": {
+                "name": "Disable Dramatic Rolls for NPCs and GM",
+                "label": "Let the players have their fun, dramatic rolls will only trigger for players and actors that have a player owner."
             }
         },
         "settings-form": {
