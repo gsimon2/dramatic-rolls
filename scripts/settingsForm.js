@@ -13,12 +13,10 @@ export class DramaticRollsSettingsForm extends FormApplication {
     }
 
     storedSettings = {};
-    hasFileLinkError = false;
 
     getData(options) {
         const nonSettingData = {
             acceptedSoundFormats: "audio/mpeg,audio/ogg,audio/x-flac,audio/flac,audio/wav,audio/webm",
-            hasFileLinkError: this.hasFileLinkError
         };
 
         if ($.isEmptyObject(this.storedSettings)) {
@@ -36,9 +34,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
         super.activateListeners(html);
         html.find('button[name="reset"]').click(this.onReset.bind(this));
         html.find('button[id="add-crit-sound-button"]').click(((e) => this.simulateCritInputClick(e)).bind(this));
-        html.find('input[id="add-crit-sound-input"]').change(((e) => this.onAddCrit(e)).bind(this));
         html.find('button[id="add-fumble-sound-button"]').click(((e) => this.simulateFumbleInputClick(e)).bind(this));
-        html.find('input[id="add-fumble-sound-input"]').change(((e) => this.onAddFumble(e)).bind(this));
         this.bindPlaySoundButtons(html);
         this.bindRemoveSoundButtons(html);
         this.reset = false;
@@ -47,15 +43,23 @@ export class DramaticRollsSettingsForm extends FormApplication {
     simulateCritInputClick(e) {
         e.preventDefault();
         e.stopPropagation();
-        this.hasFileLinkError = false;
-        $('#add-crit-sound-input').click();
+        new FilePicker({
+            type: "audio",
+            displayMode: "list",
+            canUpload: "true",
+            callback: path => this.onAddCrit(path)
+        }).render();
     }
 
     simulateFumbleInputClick(e) {
         e.preventDefault();
         e.stopPropagation();
-        this.hasFileLinkError = false;
-        $('#add-fumble-sound-input').click();
+        new FilePicker({
+            type: "audio",
+            displayMode: "list",
+            canUpload: "true",
+            callback: path => this.onAddFumble(path)
+        }).render();
     }
 
     bindPlaySoundButtons(html) {
@@ -98,48 +102,14 @@ export class DramaticRollsSettingsForm extends FormApplication {
         this.render();
     }
 
-    onAddCrit(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        let newFilePath = ""
-
-        try {
-            newFilePath = e.target.files[0].path;
-            newFilePath = newFilePath.split('FoundryVTT\\Data')[1];
-            
-            if (!newFilePath) {
-                throw new Error("Invalid file path - Most likely file is not under the FoundryVTT/Data directory");
-            }
-        } catch (e) {
-            this.hasFileLinkError = true;
-            console.error('Failed to get file path', e);
-            this.render();
-            return;
-        }
-        this.updateStoredSettingsFromForm()
+    onAddCrit(newFilePath) {
+        this.updateStoredSettingsFromForm();
         this.storedSettings.critSounds.push({enabled: true, path: newFilePath, isUserAddedSound: true});
         this.render();
         this.scrollToBottom('#crit-sounds-list');
     }
 
-    onAddFumble(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        let newFilePath = ""
-
-        try {
-            newFilePath = e.target.files[0].path;
-            newFilePath = newFilePath.split('FoundryVTT\\Data')[1];
-            
-            if (!newFilePath) {
-                throw new Error("Invalid file path - Most likely file is not under the FoundryVTT/Data directory");
-            }
-        } catch (e) {
-            this.hasFileLinkError = true;
-            console.error('Failed to get file path', e);
-            this.render();
-            return;
-        }
+    onAddFumble(newFilePath) {
         this.updateStoredSettingsFromForm()
         this.storedSettings.fumbleSounds.push({enabled: true, path: newFilePath, isUserAddedSound: true});
         this.render();

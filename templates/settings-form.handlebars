@@ -1,8 +1,5 @@
 <div class="tab active" data-tab="general">
     <form autocomplete="off" class="dramatic-rolls setting-form">
-        {{#if hasFileLinkError}}
-            <div class="error-text"><span>{{localize "dramatic-rolls.settings-form.fileLinkError"}}</span></div>
-        {{/if}}
 
         <span class="list-header">{{localize "dramatic-rolls.settings-form.critical-sounds-list-title"}}</span>
         <ul id="crit-sounds-list">
@@ -23,11 +20,9 @@
             {{/each}}
         </ul>
         <div class="add-button-wrapper">
-            <input type="file" id="add-crit-sound-input" accept="{{acceptedSoundFormats}}" />
             <button id="add-crit-sound-button">{{localize "dramatic-rolls.settings-form.addCritSound"}}</button>
-            <div><span class="notes">{{localize "dramatic-rolls.settings-form.added-files-requirement"}}</span></div>
         </div>
-        
+
         <span class="list-header">{{localize "dramatic-rolls.settings-form.fumble-sounds-list-title"}}</span>
         <ul id="fumble-sounds-list">
             {{#each fumbleSounds}}
@@ -46,9 +41,7 @@
             {{/each}}
         </ul>
         <div class="add-button-wrapper">
-            <input type="file" id="add-fumble-sound-input" accept="{{acceptedSoundFormats}}" />
             <button id="add-fumble-sound-button">{{localize "dramatic-rolls.settings-form.addFumbleSound"}}</button>
-            <div><span class="notes">{{localize "dramatic-rolls.settings-form.added-files-requirement"}}</span></div>
         </div>
 
         <div class="form-group" style="margin: 10px;">
