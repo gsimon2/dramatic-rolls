@@ -43,7 +43,7 @@ Hooks.on('ready', () => {
                     const usedDice = [...diceRolls].filter(node => !node.classList.contains('qr-discarded'))[0];
                     const rollFormula = usedDice.querySelector('div.dice-formula')?.textContent;
                     const rollResult = usedDice.querySelector('li.roll.d20')?.textContent;
-    
+
                     if (rollFormula && !disableDueToNPC(msg.data.speaker)) {
                         let roll = new Roll(rollFormula);
                         roll.results = [rollResult];
@@ -92,9 +92,14 @@ const disableDueToNPC = (speaker) => {
     return  settingEnabld && (!actorHasPlayerOwner && isGM);
 };
 
+const getActiveResults = (roll) => {
+    return roll.terms.reduce((acc, term) => acc.concat(term?.results), []).filter(result => result.active).map(result => result.result);
+};
+
 const isCrit = (roll) => {
+    getActiveResults(roll);
     if (roll._formula.includes('d20')) {
-        if (roll.results[0] == 20 || constants.debugMode) {
+        if (getActiveResults(roll).includes(20) || constants.debugMode) {
             return true;
         }
     }
@@ -103,7 +108,7 @@ const isCrit = (roll) => {
 
 const isFumble = (roll) => {
     if (roll._formula.includes('d20')) {
-        if (roll.results[0] == 1) {
+        if (getActiveResults(roll).includes(1)) {
             return true;
         }
     }
