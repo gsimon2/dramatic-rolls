@@ -3,7 +3,7 @@
         "settings": {
             "add-sound": {
                 "name": "Add Sound Effects",
-                "label": "Add sound effect to natural twenties and natural ones"
+                "label": "Add sound effect to natural twenties and natural ones."
             },
             "add-confetti": {
                 "name": "Add confetti to natural twenties",
@@ -11,11 +11,15 @@
             },
             "configure-sounds": {
                 "name": "Configure Sounds",
-                "label": "Configure which sounds play on crits and fumbles"
+                "label": "Configure which sounds play on crits and fumbles."
             },
             "disable-npc-rolls": {
                 "name": "Disable Dramatic Rolls for NPCs and GM",
                 "label": "Let the players have their fun, dramatic rolls will only trigger for players and actors that have a player owner."
+            },
+            "trigger-on-public-only": {
+                "name": "Play sounds & animations on Public rolls only",
+                "label": "If unchecked, sounds and animations will play on all rolls for you, but will only broadcast to other plays if the roll is Public. Note: the Confetti mod is required for animations to play."
             }
         },
         "settings-form": {
