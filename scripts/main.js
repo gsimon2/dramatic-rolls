@@ -65,6 +65,7 @@ Hooks.on('ready', () => {
         // Handles the midi-qol merge rolls onto one card setting
         Hooks.on('midi-qol.AttackRollComplete', (workflow) => {
             let roll = workflow.attackRoll;
+            console.log(workflow)
             !disableDueToNPC(workflow.speaker) && handleEffects(roll);
         });
     }
@@ -93,42 +94,56 @@ const disableDueToNPC = (speaker) => {
     return  settingEnabld && (!actorHasPlayerOwner && isGM);
 };
 
-const getActiveResults = (roll) => {
-    return roll.terms.reduce((acc, term) => acc.concat(term?.results), []).filter(result => result.active).map(result => result.result);
+const getSummarizedDieRolls = (roll) => {
+    const die = roll.terms.filter( t => t instanceof Die);
+
+    const results = die.flatMap( (d, index) => {
+        const faces = d.faces;
+        let results;
+
+        if ( d.results.length === 0 ) {
+            results = [parseInt(roll.results[index])];
+        } else {
+            results = d.results?.filter( r => r.active)?.map( r => r.result)
+        }
+
+        return results.map( r => { return {faces: faces, result: r}; });
+    });
+    console.log(results);
+    return results;
 };
 
-const isCrit = (roll) => {
-    getActiveResults(roll);
-    if (roll._formula.includes('d20')) {
-        if (getActiveResults(roll).includes(20) || constants.debugMode) {
-            return true;
-        }
+const isCrit = (summarizedDieRolls) => {
+    if (summarizedDieRolls.filter( r => r.faces === 20).some( r => r.result === 20) || constants.debugMode) {
+        console.log('crit!')
+        return true;
     }
     return false;
 };
 
-const isFumble = (roll) => {
-    if (roll._formula.includes('d20')) {
-        if (getActiveResults(roll).includes(1)) {
-            return true;
-        }
+const isFumble = (summarizedDieRolls) => {
+    if (summarizedDieRolls.filter( r => r.faces === 20).some( r => r.result === 1)) {
+        return true;
     }
     return false;
 };
 
 const attachSoundEffectIfNeeded = (roll) => {
-    if (isCrit(roll)) {
-        mergeObject(roll, {soundEffect: soundEffectController.getCritSoundEffect()});
+    const summarizedDieRolls = getSummarizedDieRolls(roll);
+
+    if (isFumble(summarizedDieRolls)) {
+        mergeObject(roll, {soundEffect: soundEffectController.getFumbleSoundEffect()});
     }
 
-    if (isFumble(roll)) {
-        mergeObject(roll, {soundEffect: soundEffectController.getFumbleSoundEffect()});
+    if (isCrit(summarizedDieRolls)) {
+        mergeObject(roll, {soundEffect: soundEffectController.getCritSoundEffect()});
     }
 
     return roll;
 };
 
 const handleEffects = (roll, isPublic = true) => {
+    console.log(roll);
     roll = game.settings.get(constants.modName, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
     const shouldPlay = isPublic || !game.settings.get(constants.modName, 'trigger-on-public-only');
     const shouldBroadcastToOtherPlayers = isPublic;
