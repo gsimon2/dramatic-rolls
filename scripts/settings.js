@@ -42,6 +42,15 @@ export const registerSettings = () => {
         default: false,
         type: Boolean,
     });
+
+    game.settings.register(constants.modName, 'trigger-on-public-only', {
+        name: 'dramatic-rolls.settings.trigger-on-public-only.name',
+        hint: 'dramatic-rolls.settings.trigger-on-public-only.label',
+        scope: 'world',
+        config: true,
+        default: true,
+        type: Boolean,
+    });
 };
 
 export const registerConfettiSetting = () => {

@@ -15,8 +15,9 @@ Hooks.on('ready', () => {
         diceSoNiceActive = true;
 
         Hooks.on('diceSoNiceRollComplete', (msgId) => {
-            const roll = pendingDiceSoNiceRolls.get(msgId);
-            roll && handleEffects(roll);
+            const storedInfo = pendingDiceSoNiceRolls.get(msgId); 
+            const roll = storedInfo.roll;
+            roll && handleEffects(roll, storedInfo.isPublicRoll);
             pendingDiceSoNiceRolls.delete(msgId);
         });
     }
@@ -38,7 +39,7 @@ Hooks.on('ready', () => {
                 const isPublicRoll = !msg.data.whisper.length;
                 const html = $.parseHTML(obj.content)[0];
     
-                if (isRoller && isPublicRoll && html) {
+                if (isRoller && html) {
                     const diceRolls = html.querySelectorAll('div.dice-roll');
                     const usedDice = [...diceRolls].filter(node => !node.classList.contains('qr-discarded'))[0];
                     const rollFormula = usedDice.querySelector('div.dice-formula')?.textContent;
@@ -47,7 +48,7 @@ Hooks.on('ready', () => {
                     if (rollFormula && !disableDueToNPC(msg.data.speaker)) {
                         let roll = new Roll(rollFormula);
                         roll.results = [rollResult];
-                        handleEffects(roll);
+                        handleEffects(roll, isPublicRoll);
                     }
                 }
             } catch (e) {
@@ -63,8 +64,9 @@ Hooks.on('ready', () => {
     if (game.modules.get('midi-qol')?.active) {
         // Handles the midi-qol merge rolls onto one card setting
         Hooks.on('midi-qol.AttackRollComplete', (workflow) => {
-            let roll = workflow.attackRoll;
-            !disableDueToNPC(workflow.speaker) && handleEffects(roll);
+            const roll = workflow.attackRoll;
+            const isPublic = roll.options.rollMode === "roll";
+            !disableDueToNPC(workflow.speaker) && handleEffects(roll, isPublic);
         });
     }
 });
@@ -74,11 +76,11 @@ Hooks.on('createChatMessage', (msg) => {
     const isRoller = msg.user.data._id == game.userId;
     const isPublicRoll = roll && !msg.data.whisper.length;
 
-    if (roll && isRoller && isPublicRoll && !disableDueToNPC(msg.data.speaker)) {
+    if (roll && isRoller && !disableDueToNPC(msg.data.speaker)) {
         if (diceSoNiceActive) {
-            pendingDiceSoNiceRolls.set(msg.id, roll);
+            pendingDiceSoNiceRolls.set(msg.id, {roll, isPublicRoll});
         } else {
-            handleEffects(roll);
+            handleEffects(roll, isPublicRoll);
         }
     }
 });
@@ -92,48 +94,59 @@ const disableDueToNPC = (speaker) => {
     return  settingEnabld && (!actorHasPlayerOwner && isGM);
 };
 
-const getActiveResults = (roll) => {
-    return roll.terms.reduce((acc, term) => acc.concat(term?.results), []).filter(result => result.active).map(result => result.result);
+const getSummarizedDieRolls = (roll) => {
+    const die = roll.terms.filter( t => t instanceof Die);
+
+    const results = die.flatMap( (d, index) => {
+        const faces = d.faces;
+        let results;
+
+        if ( d.results.length === 0 ) {
+            results = [parseInt(roll.results[index])];
+        } else {
+            results = d.results?.filter( r => r.active)?.map( r => r.result)
+        }
+
+        return results.map( r => { return {faces: faces, result: r}; });
+    });
+    return results;
 };
 
-const isCrit = (roll) => {
-    getActiveResults(roll);
-    if (roll._formula.includes('d20')) {
-        if (getActiveResults(roll).includes(20) || constants.debugMode) {
-            return true;
-        }
+const determineIfCrit = (summarizedDieRolls) => {
+    if (summarizedDieRolls.filter( r => r.faces === 20).some( r => r.result === 20) || constants.debugMode) {
+        return true;
     }
     return false;
 };
 
-const isFumble = (roll) => {
-    if (roll._formula.includes('d20')) {
-        if (getActiveResults(roll).includes(1)) {
-            return true;
-        }
+const determineIfFumble = (summarizedDieRolls) => {
+    if (summarizedDieRolls.filter( r => r.faces === 20).some( r => r.result === 1)) {
+        return true;
     }
     return false;
 };
 
-const attachSoundEffectIfNeeded = (roll) => {
-    if (isCrit(roll)) {
-        mergeObject(roll, {soundEffect: soundEffectController.getCritSoundEffect()});
+
+const handleEffects = (roll, isPublic = true) => {
+    const shouldPlay = isPublic || !game.settings.get(constants.modName, 'trigger-on-public-only');
+    const shouldBroadcastToOtherPlayers = isPublic;
+    const summarizedDieRolls = getSummarizedDieRolls(roll);
+    const isCrit = determineIfCrit(summarizedDieRolls);
+    const isFumble = determineIfFumble(summarizedDieRolls);
+
+    if (isFumble) {
+        roll = mergeObject(roll, {soundEffect: soundEffectController.getFumbleSoundEffect()});
     }
 
-    if (isFumble(roll)) {
-        mergeObject(roll, {soundEffect: soundEffectController.getFumbleSoundEffect()});
+    if (isCrit) {
+        roll = mergeObject(roll, {soundEffect: soundEffectController.getCritSoundEffect()});
     }
 
-    return roll;
+    shouldPlay && isCrit && handleConfetti(shouldBroadcastToOtherPlayers);
+    shouldPlay && game.settings.get(constants.modName, 'add-sound') && playSound(roll, shouldBroadcastToOtherPlayers);
 };
 
-const handleEffects = (roll) => {
-    roll = game.settings.get(constants.modName, 'add-sound') ? attachSoundEffectIfNeeded(roll) : roll;
-    handleConfetti(roll);
-    playSound(roll);
-};
-
-const playSound = (roll) => {
+const playSound = (roll, broadcastSound) => {
     const soundEffect = roll.soundEffect;
 
     if (soundEffect) {
@@ -142,17 +155,22 @@ const playSound = (roll) => {
             volume: 0.8,
             autoplay: true,
             loop: false
-        }, true);
+        }, broadcastSound);
     }
 };
 
-const handleConfetti = (roll) => {
+const handleConfetti = (shouldBroadcastToOtherPlayers) => {
     try {
-        if (game.settings.get(constants.modName, 'add-confetti') && isCrit(roll)) {
+        if (game.settings.get(constants.modName, 'add-confetti')) {
             const strength = window.confetti.confettiStrength.high;
             const shootConfettiProps = window.confetti.getShootConfettiProps(strength);
             mergeObject(shootConfettiProps, {'sound': null});
-            window.confetti.shootConfetti(shootConfettiProps);
+
+            if (shouldBroadcastToOtherPlayers) {
+                window.confetti.shootConfetti(shootConfettiProps);
+            } else {
+                window.confetti.handleShootConfetti(shootConfettiProps);
+            }
         }
     } catch {
         // Oh well, means the confetti mod isn't installed
