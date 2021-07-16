@@ -66,7 +66,6 @@ Hooks.on('ready', () => {
         Hooks.on('midi-qol.AttackRollComplete', (workflow) => {
             const roll = workflow.attackRoll;
             const isPublic = roll.options.rollMode === "roll";
-            console.log(workflow)
             !disableDueToNPC(workflow.speaker) && handleEffects(roll, isPublic);
         });
     }
@@ -110,13 +109,11 @@ const getSummarizedDieRolls = (roll) => {
 
         return results.map( r => { return {faces: faces, result: r}; });
     });
-    console.log(results);
     return results;
 };
 
 const determineIfCrit = (summarizedDieRolls) => {
     if (summarizedDieRolls.filter( r => r.faces === 20).some( r => r.result === 20) || constants.debugMode) {
-        console.log('crit!')
         return true;
     }
     return false;
@@ -131,7 +128,6 @@ const determineIfFumble = (summarizedDieRolls) => {
 
 
 const handleEffects = (roll, isPublic = true) => {
-    console.log(roll, isPublic);
     const shouldPlay = isPublic || !game.settings.get(constants.modName, 'trigger-on-public-only');
     const shouldBroadcastToOtherPlayers = isPublic;
     const summarizedDieRolls = getSummarizedDieRolls(roll);
