@@ -5,17 +5,23 @@
         <ul id="crit-sounds-list">
             {{#each critSounds}}
                 <li class="form-group sound-option-group">
-                    <input type="checkbox" name="critEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
-                    <input type="text" data-dtype="String" class="sound-path-input" value={{this.path}} title="{{this.path}}" readonly />
-                    {{#if this.isUserAddedSound}}
-                        <button id="delete-crit-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.removeSound"}}">
-                            <i class="fas fa-minus-circle"></i>
+                    <div class="group-line">
+                        <input type="checkbox" name="critEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
+                        <input type="text" data-dtype="String" class="sound-path-input" value={{this.path}} title="{{this.path}}" readonly />
+                        {{#if this.isUserAddedSound}}
+                            <button id="delete-crit-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.removeSound"}}">
+                                <i class="fas fa-minus-circle"></i>
+                            </button>
+                        {{/if}}
+                        <button id="play-crit-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
+                            <i class="fas fa-play-circle"></i>
                         </button>
-                    {{/if}}
-                    <button id="play-crit-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
-                        <i class="fas fa-play-circle"></i>
-                    </button>
-
+                    </div>
+                    <div class="group-line">
+                        <label class="volume-label">{{localize "dramatic-rolls.settings-form.soundVolume"}}</label>
+                        <input type="range" name="crit-volume" id="crit-sound-volume-{{@index}}" min="0" max="1" step="0.01" class="volume-slider" value="{{this.volume}}"/>
+                        <input type="text" class="volume-display" readonly value="{{this.volume}}" />
+                    </div>
                 </li>
             {{/each}}
         </ul>
@@ -27,16 +33,23 @@
         <ul id="fumble-sounds-list">
             {{#each fumbleSounds}}
                 <li class="form-group sound-option-group">
-                    <input type="checkbox" name="fumbleEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
-                    <input type="text" data-dtype="String" class="sound-path-input" readonly value={{this.path}} title="{{this.path}}" readonly />
-                    {{#if this.isUserAddedSound}}
-                        <button id="delete-fumble-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.removeSound"}}">
-                            <i class="fas fa-minus-circle"></i>
+                    <div class="group-line">
+                        <input type="checkbox" name="fumbleEnabled" data-dtype="Boolean" {{checked this.enabled}} title="{{localize "dramatic-rolls.settings-form.enableDisableSound"}}" />
+                        <input type="text" data-dtype="String" class="sound-path-input" readonly value={{this.path}} title="{{this.path}}" readonly />
+                        {{#if this.isUserAddedSound}}
+                            <button id="delete-fumble-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.removeSound"}}">
+                                <i class="fas fa-minus-circle"></i>
+                            </button>
+                        {{/if}}
+                        <button id="play-fumble-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
+                            <i class="fas fa-play-circle"></i>
                         </button>
-                    {{/if}}
-                    <button id="play-fumble-sound-{{@index}}" title="{{localize "dramatic-rolls.settings-form.playSound"}}">
-                        <i class="fas fa-play-circle"></i>
-                    </button>
+                    </div>
+                    <div class="group-line">
+                        <label class="volume-label">{{localize "dramatic-rolls.settings-form.soundVolume"}}</label>
+                        <input type="range" name="fumble-volume" id="fumble-sound-volume-{{@index}}" min="0" max="1" step="0.01" class="volume-slider" value="{{this.volume}}"/>
+                        <input type="text" class="volume-display" readonly value="{{this.volume}}" />
+                    </div>
                 </li>
             {{/each}}
         </ul>

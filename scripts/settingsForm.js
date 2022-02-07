@@ -37,6 +37,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
         html.find('button[id="add-fumble-sound-button"]').click(((e) => this.simulateFumbleInputClick(e)).bind(this));
         this.bindPlaySoundButtons(html);
         this.bindRemoveSoundButtons(html);
+        this.bindVolumeSliders(html);
         this.reset = false;
     }
 
@@ -62,12 +63,21 @@ export class DramaticRollsSettingsForm extends FormApplication {
         }).render();
     }
 
-    bindPlaySoundButtons(html) {
+    bindVolumeSliders(html) {
         this.data.critSounds.forEach((soundObject, index) => {
-            html.find(`button[id="play-crit-sound-${index}`).click(((e) => this.onPlaySound(e, soundObject.path)).bind(this));
+            html.find(`input[id="crit-sound-volume-${index}`).change(((e) => this.onVolumeUpdate(e, soundObject)).bind(this));
         });
         this.data.fumbleSounds.forEach((soundObject, index) => {
-            html.find(`button[id="play-fumble-sound-${index}`).click(((e) => this.onPlaySound(e, soundObject.path)).bind(this));
+            html.find(`input[id="fumble-sound-volume-${index}`).change(((e) => this.onVolumeUpdate(e, soundObject)).bind(this));
+        });
+    }
+
+    bindPlaySoundButtons(html) {
+        this.data.critSounds.forEach((soundObject, index) => {
+            html.find(`button[id="play-crit-sound-${index}`).click(((e) => this.onPlaySound(e, soundObject)).bind(this));
+        });
+        this.data.fumbleSounds.forEach((soundObject, index) => {
+            html.find(`button[id="play-fumble-sound-${index}`).click(((e) => this.onPlaySound(e, soundObject)).bind(this));
         });
     }
 
@@ -124,10 +134,12 @@ export class DramaticRollsSettingsForm extends FormApplication {
 
     updateStoredSettingsFromForm() {
         const critSoundsEnabled = Array.from($(this.form).find('input[name="critEnabled"]')).map(inputElement => inputElement.checked);
-        const critSounds = critSoundsEnabled.map((ce, index) => Object.assign({}, this.storedSettings.critSounds[index], {enabled: ce}));
+        const critSoundsVolumes = Array.from($(this.form).find('input[name="crit-volume"]')).map(inputElement => inputElement.value);
+        const critSounds = critSoundsEnabled.map((ce, index) => Object.assign({}, this.storedSettings.critSounds[index], {enabled: ce, volume: critSoundsVolumes[index]}));
 
         const fumbleSoundsEnabled = Array.from($(this.form).find('input[name="fumbleEnabled"]')).map(inputElement => inputElement.checked);
-        const fumbleSounds = fumbleSoundsEnabled.map((fe, index) => Object.assign({}, this.storedSettings.fumbleSounds[index], {enabled: fe}));
+        const fumbleSoundsVolumes = Array.from($(this.form).find('input[name="fumble-volume"]')).map(inputElement => inputElement.value);
+        const fumbleSounds = fumbleSoundsEnabled.map((fe, index) => Object.assign({}, this.storedSettings.fumbleSounds[index], {enabled: fe, volume: fumbleSoundsVolumes[index]}));
         
         this.storedSettings = {
             critSounds,
@@ -135,19 +147,26 @@ export class DramaticRollsSettingsForm extends FormApplication {
         };
     }
 
-    onPlaySound(e, soundPath) {
+    onPlaySound(e, soundObject) {
         e.preventDefault();
         e.stopPropagation();
         AudioHelper.play({
-            src: soundPath,
-            volume: 0.8,
+            src: soundObject.path,
+            volume: soundObject.volume,
             autoplay: true,
             loop: false
         }, false);
     }
 
+    onVolumeUpdate(e, soundObject) {
+        soundObject.volume = Number(e.currentTarget.value);
+        this.updateStoredSettingsFromForm();
+        this.render();
+    }
+
     _updateObject(events, formData) {
         const currentSettings = this.storedSettings;
+        console.log(currentSettings)
         const critSounds = formData.critEnabled.map((ce, index) => Object.assign({}, currentSettings.critSounds[index], {enabled: ce}));
         const fumbleSounds = formData.fumbleEnabled.map((fe, index) => Object.assign({}, currentSettings.fumbleSounds[index], {enabled: fe}));
         let updatedSettings = {
@@ -156,7 +175,12 @@ export class DramaticRollsSettingsForm extends FormApplication {
         };
 
         updatedSettings = mergeObject(currentSettings, updatedSettings, {insertKeys: true, insertValues: true});
+        console.log(updatedSettings)
         game.settings.set(constants.modName, 'settings', updatedSettings);
+    }
+
+    _onSubmit(event, updateData) {
+        console.log("submit");
     }
 };
 
