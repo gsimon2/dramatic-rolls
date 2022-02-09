@@ -10,8 +10,8 @@
     }
   ],
   "version": "1.5.0",
-  "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.8",
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "9.249",
   "esmodules": ["scripts/main.js"],
   "styles": ["styles/dramaticRolls.css"],
   "languages": [
