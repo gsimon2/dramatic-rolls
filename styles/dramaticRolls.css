@@ -27,6 +27,7 @@
 
 .dramatic-rolls.setting-form .sound-option-group .volume-slider {
     padding-right: 0.5rem;
+    margin-top: 2px;
 }
 
 .dramatic-rolls.setting-form .sound-option-group .volume-display {
