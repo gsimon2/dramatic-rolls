@@ -10,6 +10,29 @@
 .dramatic-rolls.setting-form .sound-option-group {
     flex-wrap: nowrap;
     padding-bottom: 0.5rem;
+    flex-direction: column;
+}
+
+.dramatic-rolls.setting-form .sound-option-group .group-line {
+    width: 100%;
+    display: flex;
+}
+
+.dramatic-rolls.setting-form .sound-option-group .volume-label {
+    height: 1.5rem;
+    line-height: 1rem;
+    white-space: nowrap;
+    padding: 0.25rem 0.5rem;
+}
+
+.dramatic-rolls.setting-form .sound-option-group .volume-slider {
+    padding-right: 0.5rem;
+    margin-top: 2px;
+}
+
+.dramatic-rolls.setting-form .sound-option-group .volume-display {
+    width: 46px;
+    margin: 0 0.375rem;
 }
 
 .dramatic-rolls.setting-form .list-header {

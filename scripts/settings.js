@@ -3,8 +3,8 @@ import {DramaticRollsSettingsForm} from './settingsForm.js';
 import soundEffectController from './soundEffectController.js';
 
 export const defaultSettings = {
-    critSounds: soundEffectController.critSoundEffectFiles.map(soundFilePath => ({enabled: true, path: soundFilePath, isUserAddedSound: false})),
-    fumbleSounds: soundEffectController.fumbleSoundEffectFiles.map(soundFilePath => ({enabled: true, path: soundFilePath, isUserAddedSound: false}))
+    critSounds: soundEffectController.critSoundEffectFiles.map(soundFilePath => ({enabled: true, path: soundFilePath, isUserAddedSound: false, volume: 0.8})),
+    fumbleSounds: soundEffectController.fumbleSoundEffectFiles.map(soundFilePath => ({enabled: true, path: soundFilePath, isUserAddedSound: false, volume: 0.8}))
 };
 
 export const registerSettings = () => {

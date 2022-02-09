@@ -40,14 +40,14 @@ const getCritSoundEffect = () => {
     const sounds = game.settings.get(constants.modName, 'settings').critSounds;
     const enabledSounds = sounds.filter(s => s.enabled);
     const selectedSound = enabledSounds[getRandomInt(enabledSounds.length)];
-    return selectedSound?.path || "";
+    return selectedSound;
 };
 
 const getFumbleSoundEffect = () => {
     const sounds = game.settings.get(constants.modName, 'settings').fumbleSounds;
     const enabledSounds = sounds.filter(s => s.enabled);
     const selectedSound = enabledSounds[getRandomInt(enabledSounds.length)];
-    return selectedSound?.path || "";
+    return selectedSound;
 };
 
 export default {

@@ -32,7 +32,8 @@
             "addCritSound": "Add Critical Sound Effect",
             "addFumbleSound": "Add Fumble Sound Effect",
             "critical-sounds-list-title": "Critical Sound Effects",
-            "fumble-sounds-list-title": "Fumble Sound Effects"
+            "fumble-sounds-list-title": "Fumble Sound Effects",
+            "soundVolume": "Volume"
         }
     }
 }

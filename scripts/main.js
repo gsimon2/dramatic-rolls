@@ -149,10 +149,10 @@ const handleEffects = (roll, isPublic = true) => {
 const playSound = (roll, broadcastSound) => {
     const soundEffect = roll.soundEffect;
 
-    if (soundEffect) {
+    if (soundEffect && soundEffect.path) {
         AudioHelper.play({
-            src: soundEffect,
-            volume: 0.8,
+            src: soundEffect.path,
+            volume: soundEffect.volume,
             autoplay: true,
             loop: false
         }, broadcastSound);
