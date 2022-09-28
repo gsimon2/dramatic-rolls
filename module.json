@@ -1,17 +1,28 @@
 {
+  "id": "dramatic-rolls",
   "name": "dramatic-rolls",
   "title": "Dramatic Rolls",
-  "description": "A simple module for FoundryVtt that addes a little excitement to natural 20s and natural 1s.",
+  "description": "A simple module for FoundryVTT that adds a little excitement to natural 20s and natural 1s.",
   "authors": [
     {
       "name": "Glen Simon",
       "email": "glen.a.simon@gmail.com",
       "url": "https://github.com/gsimon2"
+    },
+    {
+      "name": "Matt Raykowski",
+      "email": "matt.raykowski@gmail.com",
+      "url": "https://github.com/mattraykowski",
+      "discord": "AngryBadger#7553"
     }
   ],
   "version": "1.6.0",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9.249",
+  "minimumCoreVersion": "10",
+  "compatibleCoreVersion": "10",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10.286"
+  },
   "esmodules": ["scripts/main.js"],
   "styles": ["styles/dramaticRolls.css"],
   "languages": [

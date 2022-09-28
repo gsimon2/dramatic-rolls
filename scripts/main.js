@@ -15,9 +15,9 @@ Hooks.on('ready', () => {
         diceSoNiceActive = true;
 
         Hooks.on('diceSoNiceRollComplete', (msgId) => {
-            const storedInfo = pendingDiceSoNiceRolls.get(msgId); 
-            const roll = storedInfo.roll;
-            roll && handleEffects(roll, storedInfo.isPublicRoll);
+            const storedInfo = pendingDiceSoNiceRolls.get(msgId);
+            const rolls = storedInfo.rolls;
+            rolls && rolls.length > 0 && handleEffects(rolls, storedInfo.isPublicRoll);
             pendingDiceSoNiceRolls.delete(msgId);
         });
     }
@@ -35,8 +35,8 @@ Hooks.on('ready', () => {
 
             try {
                 pendingQuickRolls.push(msgId);
-                const isRoller = msg.user.data._id == game.userId;
-                const isPublicRoll = !msg.data.whisper.length;
+                const isRoller = msg.user.id === game.userId;
+                const isPublicRoll = !msg.whisper.length;
                 const html = $.parseHTML(obj.content)[0];
     
                 if (isRoller && html) {
@@ -45,10 +45,10 @@ Hooks.on('ready', () => {
                     const rollFormula = usedDice.querySelector('div.dice-formula')?.textContent;
                     const rollResult = usedDice.querySelector('li.roll.d20')?.textContent;
 
-                    if (rollFormula && !disableDueToNPC(msg.data.speaker)) {
+                    if (rollFormula && !disableDueToNPC(msg.speaker)) {
                         let roll = new Roll(rollFormula);
                         roll.results = [rollResult];
-                        handleEffects(roll, isPublicRoll);
+                        handleEffects([roll], isPublicRoll);
                     }
                 }
             } catch (e) {
@@ -72,78 +72,71 @@ Hooks.on('ready', () => {
 });
 
 Hooks.on('createChatMessage', (msg) => {
-    let roll = msg._roll;
-    const isRoller = msg.user.data._id == game.userId;
-    const isPublicRoll = roll && !msg.data.whisper.length;
+    let rolls = msg.rolls;
+     if(!rolls || rolls.length === 0) return;
 
-    if (roll && isRoller && !disableDueToNPC(msg.data.speaker)) {
+    const isRoller = msg.user.id === game.userId;
+    const isPublicRoll = !msg.whisper.length;
+    if (isRoller && !disableDueToNPC(msg.speaker)) {
         if (diceSoNiceActive) {
-            pendingDiceSoNiceRolls.set(msg.id, {roll, isPublicRoll});
+            pendingDiceSoNiceRolls.set(msg.id, {rolls, isPublicRoll});
         } else {
-            handleEffects(roll, isPublicRoll);
+            handleEffects(rolls, isPublicRoll);
         }
     }
 });
 
 const disableDueToNPC = (speaker) => {
-    const settingEnabld = game.settings.get(constants.modName, 'disable-npc-rolls')
+    const settingEnabled = game.settings.get(constants.modName, 'disable-npc-rolls')
     const actor = ChatMessage.getSpeakerActor(speaker);
     const actorHasPlayerOwner = actor ? actor.hasPlayerOwner : false;
     const isGM = game.users.get(game.userId).isGM;
 
-    return  settingEnabld && (!actorHasPlayerOwner && isGM);
+    return  settingEnabled && (!actorHasPlayerOwner && isGM);
 };
 
-const getSummarizedDieRolls = (roll) => {
-    const die = roll.terms.filter( t => t instanceof Die);
+const getSummarizedDieRolls = (rolls) =>
+    rolls.flatMap(roll => {
+        const terms = roll.terms.filter(t => t instanceof Die);
 
-    const results = die.flatMap( (d, index) => {
-        const faces = d.faces;
-        let results;
+        return terms.flatMap((d, index) => {
+            const faces = d.faces;
+            let results;
 
-        if ( d.results.length === 0 ) {
-            results = [parseInt(roll.results[index])];
-        } else {
-            results = d.results?.filter( r => r.active)?.map( r => r.result)
-        }
+            if ( d.results.length === 0 ) {
+                results = [parseInt(roll.results[index])];
+            } else {
+                results = d.results?.filter( r => r.active)?.map( r => r.result)
+            }
 
-        return results.map( r => { return {faces: faces, result: r}; });
+            return results.map( r => { return {faces: faces, result: r}; });
+        });
     });
-    return results;
-};
 
-const determineIfCrit = (summarizedDieRolls) => {
-    if (summarizedDieRolls.filter( r => r.faces === 20).some( r => r.result === 20) || constants.debugMode) {
-        return true;
-    }
-    return false;
-};
+const determineIfCrit = (summarizedDieRolls) =>
+    !!(summarizedDieRolls.filter(r => r.faces === 20).some(r => r.result === 20) || constants.debugMode);
 
-const determineIfFumble = (summarizedDieRolls) => {
-    if (summarizedDieRolls.filter( r => r.faces === 20).some( r => r.result === 1)) {
-        return true;
-    }
-    return false;
-};
+const determineIfFumble = (summarizedDieRolls) =>
+    !!summarizedDieRolls.filter(r => r.faces === 20).some(r => r.result === 1);
 
 
-const handleEffects = (roll, isPublic = true) => {
+const handleEffects = (rolls, isPublic = true) => {
     const shouldPlay = isPublic || !game.settings.get(constants.modName, 'trigger-on-public-only');
     const shouldBroadcastToOtherPlayers = isPublic;
-    const summarizedDieRolls = getSummarizedDieRolls(roll);
+    const summarizedDieRolls = getSummarizedDieRolls(rolls);
     const isCrit = determineIfCrit(summarizedDieRolls);
     const isFumble = determineIfFumble(summarizedDieRolls);
 
     if (isFumble) {
-        roll = mergeObject(roll, {soundEffect: soundEffectController.getFumbleSoundEffect()});
+        rolls = mergeObject(rolls, {soundEffect: soundEffectController.getFumbleSoundEffect()});
     }
 
     if (isCrit) {
-        roll = mergeObject(roll, {soundEffect: soundEffectController.getCritSoundEffect()});
+        rolls = mergeObject(rolls, {soundEffect: soundEffectController.getCritSoundEffect()});
     }
 
     shouldPlay && isCrit && handleConfetti(shouldBroadcastToOtherPlayers);
-    shouldPlay && game.settings.get(constants.modName, 'add-sound') && playSound(roll, shouldBroadcastToOtherPlayers);
+    shouldPlay && game.settings.get(constants.modName, 'add-sound') && playSound(rolls, shouldBroadcastToOtherPlayers);
 };
 
 const playSound = (roll, broadcastSound) => {
