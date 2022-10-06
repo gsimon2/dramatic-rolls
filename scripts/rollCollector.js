@@ -66,7 +66,7 @@ export const initRollCollection = () => {
 };
 
 const disableDueToNPC = (speaker) => {
-   const settingEnabld = game.settings.get(
+   const settingEnabled = game.settings.get(
       constants.modName,
       "disable-npc-rolls"
    );
@@ -74,5 +74,5 @@ const disableDueToNPC = (speaker) => {
    const actorHasPlayerOwner = actor ? actor.hasPlayerOwner : false;
    const isGM = game.users.get(game.userId).isGM;
 
-   return settingEnabld && !actorHasPlayerOwner && isGM;
+   return settingEnabled && !actorHasPlayerOwner && isGM;
 };

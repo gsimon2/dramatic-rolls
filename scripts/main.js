@@ -63,26 +63,17 @@ const getSummarizedDieRolls = async (rolls) => {
 };
 
 const determineIfCrit = (summarizedDieRolls) => {
-   if (
+   !!(
       summarizedDieRolls
          .filter((r) => r.faces === 20)
-         .some((r) => r.result === 20) ||
-      constants.debugMode
-   ) {
-      return true;
-   }
-   return false;
+         .some((r) => r.result === 20) || constants.debugMode
+   );
 };
 
 const determineIfFumble = (summarizedDieRolls) => {
-   if (
-      summarizedDieRolls
-         .filter((r) => r.faces === 20)
-         .some((r) => r.result === 1)
-   ) {
-      return true;
-   }
-   return false;
+   !!summarizedDieRolls
+      .filter((r) => r.faces === 20)
+      .some((r) => r.result === 1);
 };
 
 const playSound = (roll, broadcastSound) => {
