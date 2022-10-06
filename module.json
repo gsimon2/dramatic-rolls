@@ -1,30 +1,38 @@
 {
-  "name": "dramatic-rolls",
   "title": "Dramatic Rolls",
   "description": "A simple module for FoundryVtt that addes a little excitement to natural 20s and natural 1s.",
   "authors": [
     {
       "name": "Glen Simon",
       "email": "glen.a.simon@gmail.com",
-      "url": "https://github.com/gsimon2"
+      "url": "https://github.com/gsimon2",
+      "flags": {}
     }
   ],
-  "version": "1.6.0",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9.249",
-  "esmodules": ["scripts/main.js"],
-  "styles": ["styles/dramaticRolls.css"],
+  "version": "2.0.0",
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/dramaticRolls.css"
+  ],
   "languages": [
     {
-        "lang": "en",
-        "name": "English",
-        "path": "lang/en.json"
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
     }
   ],
   "url": "https://github.com/gsimon2/dramatic-rolls",
   "bugs": "https://github.com/gsimon2/dramatic-rolls/issues",
-	"changelog": "https://github.com/gsimon2/dramatic-rolls/releases",
-	"download": "https://github.com/gsimon2/dramatic-rolls/releases/download/1.6.0/module.zip",
-	"manifest": "https://github.com/gsimon2/dramatic-rolls/releases/download/1.6.0/module.json",
-	"readme": "https://raw.githubusercontent.com/gsimon2/dramatic-rolls/main/README.md"
+  "changelog": "https://github.com/gsimon2/dramatic-rolls/releases",
+  "download": "https://github.com/gsimon2/dramatic-rolls/releases/download/2.0.0/module.zip",
+  "manifest": "https://github.com/gsimon2/dramatic-rolls/releases/download/2.0.0/module.json",
+  "readme": "https://raw.githubusercontent.com/gsimon2/dramatic-rolls/main/README.md",
+  "id": "dramatic-rolls",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10.286"
+  }
 }
