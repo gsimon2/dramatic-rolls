@@ -1,6 +1,6 @@
 # Dramatic Rolls
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/gsimon2/dramatic-rolls/latest/module.zip)
-![Foundry Version](https://img.shields.io/badge/dynamic/json?color=orange&label=Foundry%20Version&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2Fgsimon2%2Fdramatic-rolls%2Fmain%2Fmodule.json)
+![Foundry Version](https://img.shields.io/badge/dynamic/json?color=orange&label=Foundry%20Version&query=compatibility.verified&url=https%3A%2F%2Fraw.githubusercontent.com%2Fgsimon2%2Fdramatic-rolls%2Fmain%2Fmodule.json)
 [![](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-%243-blue)](https://www.buymeacoffee.com/gsimon2)
 
 A simple module for [FoundryVtt](https://foundryvtt.com/) that addes a little excitement to natural 20s and natural 1s.
