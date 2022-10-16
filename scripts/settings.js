@@ -62,9 +62,24 @@ export const registerSettings = () => {
       hint: "dramatic-rolls.settings.trigger-on-public-only.label",
       scope: "world",
       config: true,
-      default: true,
+      default: false,
       type: Boolean,
    });
+
+   if (game.system.id === "pf2e") {
+      game.settings.register(
+         constants.modName,
+         "pf2e-trigger-on-degree-of-success",
+         {
+            name: "dramatic-rolls.settings.pf2e-trigger-on-degree-of-success.name",
+            hint: "dramatic-rolls.settings.pf2e-trigger-on-degree-of-success.label",
+            scope: "world",
+            config: true,
+            default: false,
+            type: Boolean,
+         }
+      );
+   }
 };
 
 export const registerConfettiSetting = () => {

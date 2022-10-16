@@ -3,7 +3,7 @@
         "settings": {
             "add-sound": {
                 "name": "Add Sound Effects",
-                "label": "Add sound effect to natural twenties and natural ones."
+                "label": "Add sound effects to critical successes and critical failures (fumbles)."
             },
             "add-confetti": {
                 "name": "Add confetti to natural twenties",
@@ -19,7 +19,11 @@
             },
             "trigger-on-public-only": {
                 "name": "Play sounds & animations on Public rolls only",
-                "label": "If unchecked, sounds and animations will play on all rolls for you, but will only broadcast to other plays if the roll is Public. Note: the Confetti mod is required for animations to play."
+                "label": "If checked, sounds and animations will not trigger on private rolls. Regardless of this setting, sounds and animations will only broadcast to other players if the roll is Public"
+            },
+            "pf2e-trigger-on-degree-of-success": {
+               "name": "PF2E Only - Trigger effects based on degree of success",
+               "label": "If checked, will trigger a critical effect if the roll result is 10 or more above the roll DC. Will trigger a fumble effect if the roll result is 10 or more below the roll DC"
             }
         },
         "settings-form": {
