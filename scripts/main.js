@@ -17,12 +17,12 @@ Hooks.on("ready", () => {
    initRollCollection();
 });
 
-export const handleEffects = async (roll, isPublic = true) => {
+export const handleEffects = (roll, isPublic = true) => {
    const shouldPlay =
       isPublic ||
       !game.settings.get(constants.modName, "trigger-on-public-only");
    const shouldBroadcastToOtherPlayers = isPublic;
-   const summarizedDieRolls = await getSummarizedDieRolls(roll);
+   const summarizedDieRolls = getSummarizedDieRolls(roll);
    const isCrit = determineIfCrit(summarizedDieRolls);
    const isFumble = determineIfFumble(summarizedDieRolls);
 
@@ -44,10 +44,33 @@ export const handleEffects = async (roll, isPublic = true) => {
       playSound(roll, shouldBroadcastToOtherPlayers);
 };
 
-const getSummarizedDieRolls = async (rolls) => {
-   const die = rolls.flatMap((roll) =>
-      roll.terms.filter((t) => t instanceof Die)
-   );
+const getIsRollOverrideCrit = (roll) => {
+   if (
+      game.system.id === "pf2e" &&
+      game.settings.get(constants.modName, "pf2e-trigger-on-degree-of-success")
+   ) {
+      return roll.data?.degreeOfSuccess === 3;
+   }
+   return false;
+};
+
+const getIsRollOverrideFumble = (roll) => {
+   if (
+      game.system.id === "pf2e" &&
+      game.settings.get(constants.modName, "pf2e-trigger-on-degree-of-success")
+   ) {
+      return roll.data?.degreeOfSuccess === 0;
+   }
+   return false;
+};
+
+const getSummarizedDieRolls = (rolls) => {
+   const die = rolls.flatMap((roll) => {
+      const d = roll.terms.filter((t) => t instanceof Die);
+      const isOverrideCrit = getIsRollOverrideCrit(roll);
+      const isOverrideFumble = getIsRollOverrideFumble(roll);
+      return d.map((d) => ({ ...d, isOverrideCrit, isOverrideFumble }));
+   });
 
    const results = die.flatMap((d) => {
       const faces = d.faces;
@@ -55,7 +78,12 @@ const getSummarizedDieRolls = async (rolls) => {
          d.results?.filter((r) => r.active)?.map((r) => r.result) ?? [];
 
       return results.map((r) => {
-         return { faces: faces, result: r };
+         return {
+            faces: faces,
+            result: r,
+            isOverrideCrit: d.isOverrideCrit,
+            isOverrideFumble: d.isOverrideFumble,
+         };
       });
    });
 
@@ -63,17 +91,22 @@ const getSummarizedDieRolls = async (rolls) => {
 };
 
 const determineIfCrit = (summarizedDieRolls) => {
-   !!(
+   return !!(
       summarizedDieRolls
          .filter((r) => r.faces === 20)
-         .some((r) => r.result === 20) || constants.debugMode
+         .some((r) => r.result === 20) ||
+      summarizedDieRolls.some((r) => r.isOverrideCrit) ||
+      constants.debugMode
    );
 };
 
 const determineIfFumble = (summarizedDieRolls) => {
-   !!summarizedDieRolls
-      .filter((r) => r.faces === 20)
-      .some((r) => r.result === 1);
+   return !!(
+      summarizedDieRolls
+         .filter((r) => r.faces === 20)
+         .some((r) => r.result === 1) ||
+      summarizedDieRolls.some((r) => r.isOverrideFumble)
+   );
 };
 
 const playSound = (roll, broadcastSound) => {
