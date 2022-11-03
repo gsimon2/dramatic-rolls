@@ -18,13 +18,17 @@ export const initRollCollection = () => {
       const isRoller = msg.user.id == game.userId;
       const isPublicRoll = rolls.length && !msg.whisper.length;
 
-      if (rolls.length && isRoller && !disableDueToNPC(msg.speaker)) {
+      if (!!rolls.length && isRoller && !disableDueToNPC(msg.speaker)) {
          pendingRolls.set(msg.id, { rolls, isPublicRoll });
       }
    });
 
    Hooks.on("renderChatMessage", (msg) => {
       const storedInfo = pendingRolls.get(msg.id);
+
+      if (!storedInfo) {
+         return;
+      }
 
       // Update the stored rolls with the determined results but delay handling effects until the
       // diceSoNice rolling animation is complete
@@ -36,7 +40,7 @@ export const initRollCollection = () => {
          return;
       }
 
-      if (storedInfo && msg.rolls) {
+      if (msg.rolls) {
          handleEffects(msg.rolls, storedInfo.isPublicRoll);
          pendingRolls.delete(msg.id);
       }
