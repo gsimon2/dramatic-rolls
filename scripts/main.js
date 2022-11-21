@@ -2,6 +2,7 @@ import soundEffectController from "./soundEffectController.js";
 import { registerSettings, registerConfettiSetting } from "./settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
+import { setupConfetti, fireConfetti } from "./confetti.js";
 
 Hooks.on("init", () => {
    registerSettings();
@@ -15,6 +16,7 @@ Hooks.on("ready", () => {
       registerConfettiSetting();
    }
    initRollCollection();
+   setupConfetti();
 });
 
 export const handleEffects = (roll, isPublic = true) => {
@@ -126,6 +128,8 @@ const playSound = (roll, broadcastSound) => {
 };
 
 const handleConfetti = (shouldBroadcastToOtherPlayers) => {
+   fireConfetti();
+
    try {
       if (game.settings.get(constants.modName, "add-confetti")) {
          const strength = window.confetti.confettiStrength.high;

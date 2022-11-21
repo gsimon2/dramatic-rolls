@@ -1,6 +1,6 @@
 const constants = {
    modName: "dramatic-rolls",
-   debugMode: false,
+   debugMode: true,
 };
 
 export default constants;
