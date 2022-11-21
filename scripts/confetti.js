@@ -116,7 +116,7 @@ export function setupConfetti() {
     });
   }
     
-  document.querySelector('body').onclick = function () {
-   fireConfetti();
-  };
+//   document.querySelector('body').onclick = function () {
+//    fireConfetti();
+//   };
 }

@@ -4,6 +4,8 @@ import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
 import { setupConfetti, fireConfetti } from "./confetti.js";
 
+const socketName = `module.${constants.modName}`;
+
 Hooks.on("init", () => {
    registerSettings();
    if (constants.debugMode) {
@@ -17,6 +19,7 @@ Hooks.on("ready", () => {
    }
    initRollCollection();
    setupConfetti();
+   game.socket.on(socketName, fireConfetti);
 });
 
 export const handleEffects = (roll, isPublic = true) => {
@@ -129,6 +132,10 @@ const playSound = (roll, broadcastSound) => {
 
 const handleConfetti = (shouldBroadcastToOtherPlayers) => {
    fireConfetti();
+
+   if (shouldBroadcastToOtherPlayers) {
+      game.socket.emit(socketName);
+   }
 
    try {
       if (game.settings.get(constants.modName, "add-confetti")) {

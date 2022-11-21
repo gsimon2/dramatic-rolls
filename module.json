@@ -25,6 +25,7 @@
       "flags": {}
     }
   ],
+  "socket": true,
   "url": "https://github.com/gsimon2/dramatic-rolls",
   "bugs": "https://github.com/gsimon2/dramatic-rolls/issues",
   "changelog": "https://github.com/gsimon2/dramatic-rolls/releases",
