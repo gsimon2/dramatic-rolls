@@ -66,6 +66,16 @@ export const registerSettings = () => {
       type: Boolean,
    });
 
+   game.settings.register(constants.modName, "add-confetti", {
+      name: "dramatic-rolls.settings.add-confetti.name",
+      // hint: '',
+      scope: "world",
+      config: true,
+      default: true,
+      type: Boolean,
+      restricted: false
+   });
+
    if (game.system.id === "pf2e") {
       game.settings.register(
          constants.modName,
@@ -80,15 +90,4 @@ export const registerSettings = () => {
          }
       );
    }
-};
-
-export const registerConfettiSetting = () => {
-   game.settings.register(constants.modName, "add-confetti", {
-      name: "dramatic-rolls.settings.add-confetti.name",
-      // hint: '',
-      scope: "world",
-      config: true,
-      default: true,
-      type: Boolean,
-   });
 };
