@@ -28,6 +28,7 @@ export const registerSettings = () => {
       scope: "world",
       config: true,
       default: true,
+      restricted: true,
       type: Boolean,
    });
 
@@ -46,6 +47,7 @@ export const registerSettings = () => {
       default: defaultSettings,
       type: Object,
       config: false,
+      restricted: true,
    });
 
    game.settings.register(constants.modName, "disable-npc-rolls", {
@@ -55,6 +57,7 @@ export const registerSettings = () => {
       config: true,
       default: false,
       type: Boolean,
+      restricted: true,
    });
 
    game.settings.register(constants.modName, "trigger-on-public-only", {
@@ -64,6 +67,7 @@ export const registerSettings = () => {
       config: true,
       default: false,
       type: Boolean,
+      restricted: true,
    });
 
    game.settings.register(constants.modName, "add-confetti", {
@@ -73,7 +77,7 @@ export const registerSettings = () => {
       config: true,
       default: true,
       type: Boolean,
-      restricted: false
+      restricted: false,
    });
 
    if (game.system.id === "pf2e") {
@@ -87,6 +91,7 @@ export const registerSettings = () => {
             config: true,
             default: false,
             type: Boolean,
+            restricted: true,
          }
       );
    }
