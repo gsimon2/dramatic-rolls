@@ -1,7 +1,10 @@
 import soundEffectController from "./soundEffectController.js";
-import { registerSettings, registerConfettiSetting } from "./settings.js";
+import { registerSettings } from "./settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
+import { setupConfetti, fireConfetti } from "./confetti.js";
+
+const socketName = `module.${constants.modName}`;
 
 Hooks.on("init", () => {
    registerSettings();
@@ -11,10 +14,12 @@ Hooks.on("init", () => {
 });
 
 Hooks.on("ready", () => {
-   if (game.modules.get("confetti")?.active) {
-      registerConfettiSetting();
-   }
    initRollCollection();
+   setupConfetti();
+
+   if (game.settings.get(constants.modName, "add-confetti")) {
+      game.socket.on(socketName, fireConfetti);
+   }
 });
 
 export const handleEffects = (roll, isPublic = true) => {
@@ -126,20 +131,11 @@ const playSound = (roll, broadcastSound) => {
 };
 
 const handleConfetti = (shouldBroadcastToOtherPlayers) => {
-   try {
-      if (game.settings.get(constants.modName, "add-confetti")) {
-         const strength = window.confetti.confettiStrength.high;
-         const shootConfettiProps =
-            window.confetti.getShootConfettiProps(strength);
-         mergeObject(shootConfettiProps, { sound: null });
+   if (game.settings.get(constants.modName, "add-confetti")) {
+      fireConfetti();
+   }
 
-         if (shouldBroadcastToOtherPlayers) {
-            window.confetti.shootConfetti(shootConfettiProps);
-         } else {
-            window.confetti.handleShootConfetti(shootConfettiProps);
-         }
-      }
-   } catch {
-      // Oh well, means the confetti mod isn't installed
+   if (shouldBroadcastToOtherPlayers) {
+      game.socket.emit(socketName);
    }
 };

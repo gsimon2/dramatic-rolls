@@ -13,9 +13,6 @@ By default this module comes with a sets of sounds that will be triggered on eit
 - Compatible with the [Dice So Nice!](https://foundryvtt.com/packages/dice-so-nice/) module. Holds the additional effects until the rolling animation is completed.
   - Note: Dice So Nice now has native support for special effects on specific die rolls, please check that out as it captures the intention of this repo. They can still be used together though for a wider array of effects!
 
-- Compatible with the [Confetti](https://foundryvtt.com/packages/confetti/) module. Triggers the confetti effect on natural 20s.
-
 
 ## Upcoming Features (Maybe)
-- Adding visual effects that do not rely on the [Confetti](https://foundryvtt.com/packages/confetti/) module.
 - Adding effects for min / max damage rolls.

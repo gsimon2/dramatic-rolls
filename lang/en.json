@@ -6,8 +6,8 @@
                 "label": "Add sound effects to critical successes and critical failures (fumbles)."
             },
             "add-confetti": {
-                "name": "Add confetti to natural twenties",
-                "label": ""
+                "name": "Add confetti to criticals",
+                "label": "Recommend disabling this for slower computers"
             },
             "configure-sounds": {
                 "name": "Configure Sounds",
