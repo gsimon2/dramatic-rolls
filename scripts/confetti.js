@@ -1,12 +1,11 @@
 // Copy pasted and modified from this codepen: https://codepen.io/anthonygreco/pen/PGPVJz
 import gsap, {Physics2DPlugin} from "/scripts/greensock/esm/all.js";
+import constants from "../constants.js";
 gsap.registerPlugin(Physics2DPlugin);
 
 var emitterSize = 20,
-dotQuantity = 120,
 dotSizeMin = 10,
 dotSizeMax = 15,
-speed = 10,
 gravity = 0.7,
 explosionQuantity = 6,
 emitter = document.querySelector('#interface'),
@@ -16,6 +15,8 @@ container, i;
 
 function createExplosion(container) {
   var tl = gsap.timeline({paused: true}),
+  speed = getRandom(8, 14),
+  dotQuantity = getRandom(100, 160),
   dots = [],
   angle, duration, length, dot, i, size, r, g, b;
   for (i = 0; i < dotQuantity; i++) {
@@ -73,7 +74,6 @@ function createExplosion(container) {
 function explode(element) {
   var bounds = element.getBoundingClientRect(),
   explosion;
-  console.log(bounds)
   if (++currentExplosion === explosions.length) {
     currentExplosion = 0;
   }
@@ -83,6 +83,15 @@ function explode(element) {
     y: bounds.top + bounds.height / 2
   });
   explosion.animation.restart();
+
+  AudioHelper.play(
+   {
+      src: `modules/${constants.modName}/sounds/confetti/little_pop.mp3`,
+      volume: 0.6,
+      autoplay: true,
+      loop: false,
+   },
+   true);
 }
 
 function getRandom(min, max) {
@@ -99,7 +108,7 @@ export function fireConfetti() {
     } else {
       clearInterval(interval);
     }
-  }, 150);
+  }, getRandom(10, 250));
 }
 
 export function setupConfetti() {
