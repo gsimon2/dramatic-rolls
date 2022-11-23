@@ -28,7 +28,6 @@ export const registerSettings = () => {
       scope: "world",
       config: true,
       default: true,
-      restricted: true,
       type: Boolean,
    });
 
@@ -38,6 +37,7 @@ export const registerSettings = () => {
       hint: "dramatic-rolls.settings.configure-sounds.label",
       icon: "fas fa-cogs",
       type: DramaticRollsSettingsForm,
+      scope: 'world',
       restricted: true,
    });
 
@@ -47,7 +47,6 @@ export const registerSettings = () => {
       default: defaultSettings,
       type: Object,
       config: false,
-      restricted: true,
    });
 
    game.settings.register(constants.modName, "disable-npc-rolls", {
@@ -57,7 +56,6 @@ export const registerSettings = () => {
       config: true,
       default: false,
       type: Boolean,
-      restricted: true,
    });
 
    game.settings.register(constants.modName, "trigger-on-public-only", {
@@ -67,17 +65,15 @@ export const registerSettings = () => {
       config: true,
       default: false,
       type: Boolean,
-      restricted: true,
    });
 
    game.settings.register(constants.modName, "add-confetti", {
       name: "dramatic-rolls.settings.add-confetti.name",
       // hint: '',
-      scope: "world",
+      scope: "client",
       config: true,
       default: true,
       type: Boolean,
-      restricted: false,
    });
 
    if (game.system.id === "pf2e") {
@@ -91,7 +87,6 @@ export const registerSettings = () => {
             config: true,
             default: false,
             type: Boolean,
-            restricted: true,
          }
       );
    }
