@@ -3,7 +3,7 @@ import { defaultSettings } from "./settings.js";
 
 export class DramaticRollsSettingsForm extends FormApplication {
    static get defaultOptions() {
-      return mergeObject(super.defaultOptions, {
+      return foundry.utils.mergeObject(super.defaultOptions, {
          title: game.i18n.localize(`${constants.modName}.settings-form.title`),
          id: `${constants.modName}-settings-form`,
          template: `modules/${constants.modName}/templates/settings-form.handlebars`,
@@ -25,7 +25,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
          this.storedSettings = game.settings.get(constants.modName, "settings");
       }
 
-      const data = mergeObject(nonSettingData, this.storedSettings);
+      const data = foundry.utils.mergeObject(nonSettingData, this.storedSettings);
 
       this.data = data;
       return data;
@@ -171,7 +171,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
    onPlaySound(e, soundObject) {
       e.preventDefault();
       e.stopPropagation();
-      AudioHelper.play(
+      foundry.audio.AudioHelper.play(
          {
             src: soundObject.path,
             volume: soundObject.volume,

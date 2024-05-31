@@ -15,7 +15,7 @@ let diceSoNiceActive = false;
 export const initRollCollection = () => {
    Hooks.on("createChatMessage", (msg) => {
       let rolls = msg.rolls;
-      const isRoller = msg.user.id == game.userId;
+      const isRoller = msg.author.id == game.userId;
       const isPublicRoll = rolls.length && !msg.whisper.length;
 
       if (!!rolls.length && isRoller && !disableDueToNPC(msg.speaker)) {

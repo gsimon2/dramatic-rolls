@@ -84,7 +84,7 @@ function explode(element) {
   });
   explosion.animation.restart();
 
-  AudioHelper.play(
+  foundry.audio.AudioHelper.play(
    {
       src: `modules/${constants.modName}/sounds/confetti/little_pop.mp3`,
       volume: 0.6,
