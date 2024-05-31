@@ -32,13 +32,13 @@ export const handleEffects = (roll, isPublic = true) => {
    const isFumble = determineIfFumble(summarizedDieRolls);
 
    if (isFumble) {
-      roll = mergeObject(roll, {
+      roll = foundry.utils.mergeObject(roll, {
          soundEffect: soundEffectController.getFumbleSoundEffect(),
       });
    }
 
    if (isCrit) {
-      roll = mergeObject(roll, {
+      roll = foundry.utils.mergeObject(roll, {
          soundEffect: soundEffectController.getCritSoundEffect(),
       });
    }
@@ -54,7 +54,7 @@ const getIsRollOverrideCrit = (roll) => {
       game.system.id === "pf2e" &&
       game.settings.get(constants.modName, "pf2e-trigger-on-degree-of-success")
    ) {
-      return roll.data?.degreeOfSuccess === 3;
+      return roll.options?.degreeOfSuccess === 3;
    }
    return false;
 };
@@ -64,21 +64,21 @@ const getIsRollOverrideFumble = (roll) => {
       game.system.id === "pf2e" &&
       game.settings.get(constants.modName, "pf2e-trigger-on-degree-of-success")
    ) {
-      return roll.data?.degreeOfSuccess === 0;
+      return roll.options?.degreeOfSuccess === 0;
    }
    return false;
 };
 
 const getSummarizedDieRolls = (rolls) => {
    const die = rolls.flatMap((roll) => {
-      const d = roll.terms.filter((t) => t instanceof Die);
+      const d = roll.terms.filter((t) => t instanceof foundry.dice.terms.Die);
       const isOverrideCrit = getIsRollOverrideCrit(roll);
       const isOverrideFumble = getIsRollOverrideFumble(roll);
       return d.map((d) => ({ ...d, isOverrideCrit, isOverrideFumble }));
    });
 
    const results = die.flatMap((d) => {
-      const faces = d.faces;
+      const faces = d?.faces ?? d?._faces;
       const results =
          d.results?.filter((r) => r.active)?.map((r) => r.result) ?? [];
 
@@ -118,7 +118,7 @@ const playSound = (roll, broadcastSound) => {
    const soundEffect = roll.soundEffect;
 
    if (soundEffect && soundEffect.path) {
-      AudioHelper.play(
+      foundry.audio.AudioHelper.play(
          {
             src: soundEffect.path,
             volume: soundEffect.volume,
