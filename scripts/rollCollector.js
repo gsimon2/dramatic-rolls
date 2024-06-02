@@ -15,6 +15,15 @@ let diceSoNiceActive = false;
 export const initRollCollection = () => {
    Hooks.on("createChatMessage", (msg) => {
       let rolls = msg.rolls;
+
+      // Check for and parse inline rolls
+      if (msg.content.indexOf("inline-roll") !== -1) {
+         const inlineRolls = parseInlineRoll(msg);
+         if (inlineRolls.length) {
+            rolls = rolls.concat(inlineRolls);
+         }
+      }
+
       const isRoller = msg.author.id == game.userId;
       const isPublicRoll = rolls.length && !msg.whisper.length;
 
@@ -30,18 +39,27 @@ export const initRollCollection = () => {
          return;
       }
 
+      // Check for and parse inline rolls
+      let rolls = msg.rolls;
+      if (msg.content.indexOf("inline-roll") !== -1) {
+         const inlineRolls = parseInlineRoll(msg);
+         if (inlineRolls.length) {
+            rolls = rolls.concat(inlineRolls);
+         }
+      }
+
       // Update the stored rolls with the determined results but delay handling effects until the
       // diceSoNice rolling animation is complete
       if (diceSoNiceActive) {
          pendingRolls.set(msg.id, {
-            rolls: msg.rolls,
+            rolls: rolls,
             isPublicRoll: storedInfo.isPublicRoll,
          });
          return;
       }
 
-      if (msg.rolls) {
-         handleEffects(msg.rolls, storedInfo.isPublicRoll);
+      if (rolls) {
+         handleEffects(rolls, storedInfo.isPublicRoll);
          pendingRolls.delete(msg.id);
       }
    });
@@ -79,4 +97,22 @@ const disableDueToNPC = (speaker) => {
    const isGM = game.users.get(game.userId).isGM;
 
    return settingEnabled && !actorHasPlayerOwner && isGM;
+};
+
+const parseInlineRoll = (msg) => {
+   let JqInlineRolls = $($.parseHTML(msg.content)).filter(
+      ".inline-roll.inline-result"
+   );
+
+   if (JqInlineRolls.length == 0 && !msg.isRoll) {
+      //it was a false positive
+      return [];
+   }
+
+   let inlineRollList = [];
+   JqInlineRolls.each((index, el) => {
+      inlineRollList.push(Roll.fromJSON(unescape(el.dataset.roll)));
+   });
+
+   return inlineRollList;
 };
