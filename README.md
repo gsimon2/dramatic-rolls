@@ -1,5 +1,6 @@
 # Dramatic Rolls
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/gsimon2/dramatic-rolls/latest/module.zip)
+![GitHub Downloads (specific asset, all releases)](https://img.shields.io/github/downloads/gsimon2/dramatic-rolls/module.zip)
 ![Foundry Version](https://img.shields.io/badge/dynamic/json?color=orange&label=Foundry%20Version&query=compatibility.verified&url=https%3A%2F%2Fraw.githubusercontent.com%2Fgsimon2%2Fdramatic-rolls%2Fmain%2Fmodule.json)
 [![](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-%243-blue)](https://www.buymeacoffee.com/gsimon2)
 
