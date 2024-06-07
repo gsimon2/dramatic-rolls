@@ -50,9 +50,18 @@ const getFumbleSoundEffect = () => {
    return selectedSound;
 };
 
+const playSound = (soundParams, broadcastSound) => {
+   if (foundry?.audio?.AudioHelper) {
+      foundry.audio.AudioHelper.play(soundParams, broadcastSound);
+   } else {
+      AudioHelper.play(soundParams, broadcastSound);
+   }
+}
+
 export default {
    critSoundEffectFiles,
    fumbleSoundEffectFiles,
    getCritSoundEffect,
    getFumbleSoundEffect,
+   playSound
 };
