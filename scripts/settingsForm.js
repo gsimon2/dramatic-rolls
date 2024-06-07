@@ -1,4 +1,5 @@
 import constants from "../constants.js";
+import soundEffectController from "./soundEffectController.js";
 import { defaultSettings } from "./settings.js";
 
 export class DramaticRollsSettingsForm extends FormApplication {
@@ -171,7 +172,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
    onPlaySound(e, soundObject) {
       e.preventDefault();
       e.stopPropagation();
-      foundry.audio.AudioHelper.play(
+      soundEffectController.playSound(
          {
             src: soundObject.path,
             volume: soundObject.volume,

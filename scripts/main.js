@@ -118,7 +118,7 @@ const playSound = (roll, broadcastSound) => {
    const soundEffect = roll.soundEffect;
 
    if (soundEffect && soundEffect.path) {
-      foundry.audio.AudioHelper.play(
+      soundEffectController.playSound(
          {
             src: soundEffect.path,
             volume: soundEffect.volume,
