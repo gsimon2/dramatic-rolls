@@ -3,6 +3,7 @@ import { registerSettings } from "./settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
 import { setupConfetti, fireConfetti } from "./confetti.js";
+import { setupNumberPop, animateCount } from "./animations/numberPop.js";
 
 const socketName = `module.${constants.modName}`;
 
@@ -16,6 +17,7 @@ Hooks.on("init", () => {
 Hooks.on("ready", () => {
    initRollCollection();
    setupConfetti();
+   setupNumberPop();
 
    if (game.settings.get(constants.modName, "add-confetti")) {
       game.socket.on(socketName, fireConfetti);
@@ -31,6 +33,7 @@ export const handleEffects = (roll, isPublic = true) => {
    const isCrit = determineIfCrit(summarizedDieRolls);
    const isFumble = determineIfFumble(summarizedDieRolls);
 
+   // remove this
    if (isFumble) {
       roll = foundry.utils.mergeObject(roll, {
          soundEffect: soundEffectController.getFumbleSoundEffect(),
@@ -43,6 +46,8 @@ export const handleEffects = (roll, isPublic = true) => {
       });
    }
 
+   // have a animation controller that gets passed in if its a crit or fumble and if we should broadcast to other players
+   // animation controller selects sounds and animationsa
    shouldPlay && isCrit && handleConfetti(shouldBroadcastToOtherPlayers);
    shouldPlay &&
       game.settings.get(constants.modName, "add-sound") &&
@@ -101,7 +106,7 @@ const determineIfCrit = (summarizedDieRolls) => {
          .filter((r) => r.faces === 20)
          .some((r) => r.result === 20) ||
       summarizedDieRolls.some((r) => r.isOverrideCrit) ||
-      constants.debugMode
+      constants.overrideCrit
    );
 };
 
@@ -110,7 +115,8 @@ const determineIfFumble = (summarizedDieRolls) => {
       summarizedDieRolls
          .filter((r) => r.faces === 20)
          .some((r) => r.result === 1) ||
-      summarizedDieRolls.some((r) => r.isOverrideFumble)
+      summarizedDieRolls.some((r) => r.isOverrideFumble) ||
+      constants.overrideFumble
    );
 };
 
@@ -133,6 +139,7 @@ const playSound = (roll, broadcastSound) => {
 const handleConfetti = (shouldBroadcastToOtherPlayers) => {
    if (game.settings.get(constants.modName, "add-confetti")) {
       fireConfetti();
+      // animateCount(20, true, false);
    }
 
    if (shouldBroadcastToOtherPlayers) {
