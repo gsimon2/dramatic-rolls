@@ -1,11 +1,9 @@
-import soundEffectController from "./soundEffectController.js";
 import { registerSettings } from "./settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
-import { setupConfetti, fireConfetti } from "./confetti.js";
-import { setupNumberPop, animateCount } from "./animations/numberPop.js";
+import { fireConfetti } from "./confetti.js";
+import animationController from './animationController.js';
 
-const socketName = `module.${constants.modName}`;
 
 Hooks.on("init", () => {
    registerSettings();
@@ -16,11 +14,12 @@ Hooks.on("init", () => {
 
 Hooks.on("ready", () => {
    initRollCollection();
-   setupConfetti();
-   setupNumberPop();
+   animationController.setupAnimations();
 
+   // move this to animation controller.
+   // We need info passed on the socket like which sound / animation should play
    if (game.settings.get(constants.modName, "add-confetti")) {
-      game.socket.on(socketName, fireConfetti);
+      game.socket.on(constants.socketName, fireConfetti);
    }
 });
 
@@ -33,25 +32,13 @@ export const handleEffects = (roll, isPublic = true) => {
    const isCrit = determineIfCrit(summarizedDieRolls);
    const isFumble = determineIfFumble(summarizedDieRolls);
 
-   // remove this
-   if (isFumble) {
-      roll = foundry.utils.mergeObject(roll, {
-         soundEffect: soundEffectController.getFumbleSoundEffect(),
-      });
+   if (shouldPlay && isCrit) {
+      animationController.playCriticalAnimation(shouldBroadcastToOtherPlayers);
    }
 
-   if (isCrit) {
-      roll = foundry.utils.mergeObject(roll, {
-         soundEffect: soundEffectController.getCritSoundEffect(),
-      });
-   }
-
-   // have a animation controller that gets passed in if its a crit or fumble and if we should broadcast to other players
-   // animation controller selects sounds and animationsa
-   shouldPlay && isCrit && handleConfetti(shouldBroadcastToOtherPlayers);
-   shouldPlay &&
-      game.settings.get(constants.modName, "add-sound") &&
-      playSound(roll, shouldBroadcastToOtherPlayers);
+   if (shouldPlay && isFumble) {
+      animationController.playFumbleAnimation(shouldBroadcastToOtherPlayers);
+   }  
 };
 
 const getIsRollOverrideCrit = (roll) => {
@@ -118,31 +105,4 @@ const determineIfFumble = (summarizedDieRolls) => {
       summarizedDieRolls.some((r) => r.isOverrideFumble) ||
       constants.overrideFumble
    );
-};
-
-const playSound = (roll, broadcastSound) => {
-   const soundEffect = roll.soundEffect;
-
-   if (soundEffect && soundEffect.path) {
-      soundEffectController.playSound(
-         {
-            src: soundEffect.path,
-            volume: soundEffect.volume,
-            autoplay: true,
-            loop: false,
-         },
-         broadcastSound
-      );
-   }
-};
-
-const handleConfetti = (shouldBroadcastToOtherPlayers) => {
-   if (game.settings.get(constants.modName, "add-confetti")) {
-      fireConfetti();
-      // animateCount(20, true, false);
-   }
-
-   if (shouldBroadcastToOtherPlayers) {
-      game.socket.emit(socketName);
-   }
 };
