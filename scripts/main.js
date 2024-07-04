@@ -1,26 +1,22 @@
 import { registerSettings } from "./settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
-import { fireConfetti } from "./confetti.js";
 import animationController from './animationController.js';
 
 
 Hooks.on("init", () => {
    registerSettings();
+
    if (constants.debugMode) {
       CONFIG.debug.hooks = true;
+      CONFIG.debug.audio = true;
+      CONFIG.debug.dice = true;
+      CONFIG.debug.rollParsing = true;
    }
 });
 
 Hooks.on("ready", () => {
    initRollCollection();
-   animationController.setupAnimations();
-
-   // move this to animation controller.
-   // We need info passed on the socket like which sound / animation should play
-   if (game.settings.get(constants.modName, "add-confetti")) {
-      game.socket.on(constants.socketName, fireConfetti);
-   }
 });
 
 export const handleEffects = (roll, isPublic = true) => {
@@ -33,11 +29,11 @@ export const handleEffects = (roll, isPublic = true) => {
    const isFumble = determineIfFumble(summarizedDieRolls);
 
    if (shouldPlay && isCrit) {
-      animationController.playCriticalAnimation(shouldBroadcastToOtherPlayers);
+      animationController.playCriticalAnimation(summarizedDieRolls[0].result, shouldBroadcastToOtherPlayers);
    }
 
    if (shouldPlay && isFumble) {
-      animationController.playFumbleAnimation(shouldBroadcastToOtherPlayers);
+      animationController.playFumbleAnimation(summarizedDieRolls[0].result, shouldBroadcastToOtherPlayers);
    }  
 };
 
