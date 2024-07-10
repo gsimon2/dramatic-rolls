@@ -1,20 +1,10 @@
 // based on Confetti! https://www.kirilv.com/canvas-confetti/
-import confetti from "https://cdn.skypack.dev/canvas-confetti";
+import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.npmjs.com/package/canvas-confetti
+import { getDistinct } from "../utils.js";
 
 // document.body.addEventListener("click", () => {
 //    animateCount(20, true, false);
 // });
-
-function getDistinct(array, pick) {
-   const sample = [];
-   const arrayClone = [...array];
-
-   for (var i = 0; i < pick; i++) {
-      sample.push(arrayClone.splice(Math.random() * arrayClone.length, 1));
-   }
-
-   return sample.flat();
-}
 
 export function animateCount(num, isCrit, isFumble) {
    const happyColors = [
@@ -61,7 +51,7 @@ export function animateCount(num, isCrit, isFumble) {
 
    if (isCrit || isFumble) {
       confetti({
-         particleCount: isCrit ? 250 : 25,
+         particleCount: isCrit ? 400 : 25,
          spread: 200,
          startVelocity: isCrit ? 45 : 5,
          origin: { y: isCrit ? 0.4 : 0.68 },
