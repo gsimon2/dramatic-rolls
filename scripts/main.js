@@ -1,7 +1,7 @@
-import { registerSettings } from "./settings.js";
+import { registerSettings, handleMigrationSettings } from "./settings/settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
-import animationController from './animationController.js';
+import animationController from './controllers/animationController.js';
 
 
 Hooks.on("init", () => {
@@ -16,6 +16,7 @@ Hooks.on("init", () => {
 });
 
 Hooks.on("ready", () => {
+   handleMigrationSettings();
    initRollCollection();
 });
 

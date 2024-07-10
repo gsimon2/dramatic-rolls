@@ -7,6 +7,12 @@
    box-shadow: inset 0 -10px 10px -10px #3a3939;
 }
 
+.dramatic-rolls.setting-form .animation-name {
+   width: 100%;
+   text-align: center;
+   line-height: 28px;
+}
+
 .dramatic-rolls.setting-form .sound-option-group {
    flex-wrap: nowrap;
    padding-bottom: 0.5rem;

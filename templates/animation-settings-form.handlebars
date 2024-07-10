@@ -1,0 +1,84 @@
+<div class="tab active" data-tab="general">
+   <form autocomplete="off" class="dramatic-rolls setting-form">
+
+      <span class="list-header">{{localize
+            "dramatic-rolls.configure-animations-settings-form.critical-animations-list-title"
+         }}</span>
+      <ul id="crit-animations-list">
+         {{#each criticalAnimations}}
+            <li class="form-group sound-option-group">
+               <div class="group-line">
+                  <input
+                     type="checkbox"
+                     name="critEnabled"
+                     id="enable-crit-animation-{{@index}}"
+                     data-dtype="Boolean"
+                     {{checked this.enabled}}
+                     title="{{localize
+                        'dramatic-rolls.configure-animations-settings-form.enableDisableAnimation'
+                     }} {{this.name}}"
+                  />
+                  <span class="animation-name">
+                     {{this.name}}
+                  </span>
+                  <button
+                     id="play-crit-animation-{{@index}}"
+                     title="{{localize
+                        'dramatic-rolls.configure-animations-settings-form.playAnimation'
+                     }} {{this.name}}"
+                  >
+                     <i class="fas fa-play-circle"></i>
+                  </button>
+               </div>
+            </li>
+         {{/each}}
+      </ul>
+      <br />
+      <span class="list-header">{{localize
+            "dramatic-rolls.configure-animations-settings-form.fumble-animations-list-title"
+         }}</span>
+      <ul id="fumble-sounds-list">
+         {{#each fumbleAnimations}}
+            <li class="form-group sound-option-group">
+               <div class="group-line">
+                  <input
+                     type="checkbox"
+                     name="critEnabled"
+                     id="enable-fumble-animation-{{@index}}"
+                     data-dtype="Boolean"
+                     {{checked this.enabled}}
+                     title="{{localize
+                        'dramatic-rolls.configure-animations-settings-form.enableDisableAnimation'
+                     }} {{this.name}}"
+                  />
+                  <span class="animation-name">
+                     {{this.name}}
+                  </span>
+                  <button
+                     id="play-fumble-animation-{{@index}}"
+                     title="{{localize
+                        'dramatic-rolls.configure-animations-settings-form.playAnimation'
+                     }} {{this.name}}"
+                  >
+                     <i class="fas fa-play-circle"></i>
+                  </button>
+               </div>
+            </li>
+         {{/each}}
+      </ul>
+      <div class="form-group" style="margin: 10px;">
+         <button type="submit" name="submit">
+            <i class="fas fa-save"></i>
+            {{localize
+               "dramatic-rolls.configure-animations-settings-form.save"
+            }}
+         </button>
+         <button type="button" name="reset">
+            <i class="fas fa-undo"></i>
+            {{localize
+               "dramatic-rolls.configure-animations-settings-form.reset"
+            }}
+         </button>
+      </div>
+   </form>
+</div>

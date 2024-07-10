@@ -1,5 +1,5 @@
 import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.npmjs.com/package/canvas-confetti
-import soundEffectController from "../soundEffectController.js";
+import soundEffectController from "../controllers/soundEffectController.js";
 import constants from "../../constants.js";
 import { getDistinct, getRandomArbitrary } from "../utils.js";
 
@@ -39,12 +39,12 @@ const colors = [
 // });
 
 const explosionPoints = [
-   { x: getRandomArbitrary(0.1, 0.5), y: getRandomArbitrary(0.1, 0.5) },
-   { x: getRandomArbitrary(0.1, 0.5), y: getRandomArbitrary(0.3, 0.8) },
+   { x: getRandomArbitrary(0.05, 0.5), y: getRandomArbitrary(0.1, 0.5) },
+   { x: getRandomArbitrary(0.05, 0.5), y: getRandomArbitrary(0.3, 0.8) },
    { x: getRandomArbitrary(0.5, 0.9), y: getRandomArbitrary(0.1, 0.5) },
    { x: getRandomArbitrary(0.5, 0.9), y: getRandomArbitrary(0.3, 0.8) },
-   { x: getRandomArbitrary(0.2, 0.8), y: getRandomArbitrary(0.1, 0.7) },
-   { x: getRandomArbitrary(0.2, 0.8), y: getRandomArbitrary(0.1, 0.8) }
+   { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.7) },
+   { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.8) }
 ];
 
 export const fireConfetti = () => {
