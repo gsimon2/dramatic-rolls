@@ -2,6 +2,7 @@ import soundEffectController from "./soundEffectController.js";
 import { setupConfetti, fireConfetti } from "./confetti.js";
 import { setupNumberPop, animateCount } from "./animations/numberPop.js";
 import constants from "../constants.js";
+import { fireConfetti2  } from "./animations/confetti2.js";
 
 // Need to add animations to the settings menu
 class Animation {
