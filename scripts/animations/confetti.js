@@ -38,14 +38,16 @@ const colors = [
 //    // fireEmojiConfetti();
 // });
 
-const explosionPoints = [
-   { x: getRandomArbitrary(0.05, 0.5), y: getRandomArbitrary(0.1, 0.5) },
-   { x: getRandomArbitrary(0.05, 0.5), y: getRandomArbitrary(0.3, 0.8) },
-   { x: getRandomArbitrary(0.5, 0.9), y: getRandomArbitrary(0.1, 0.5) },
-   { x: getRandomArbitrary(0.5, 0.9), y: getRandomArbitrary(0.3, 0.8) },
-   { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.7) },
-   { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.8) }
-];
+const getExplosionPoints = () => {
+   return [
+      { x: getRandomArbitrary(0.05, 0.5), y: getRandomArbitrary(0.1, 0.5) },
+      { x: getRandomArbitrary(0.05, 0.5), y: getRandomArbitrary(0.3, 0.8) },
+      { x: getRandomArbitrary(0.5, 0.9), y: getRandomArbitrary(0.1, 0.5) },
+      { x: getRandomArbitrary(0.5, 0.9), y: getRandomArbitrary(0.3, 0.8) },
+      { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.7) },
+      { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.8) },
+   ];
+};
 
 export const fireConfetti = () => {
    const points = [
@@ -82,7 +84,7 @@ export const fireConfetti = () => {
 };
 
 export const fireFireworkConfetti = () => {
-   explosionPoints.forEach((point, index) => {
+   getExplosionPoints().forEach((point, index) => {
       setTimeout(() => {
          soundEffectController.playSound(
             {
@@ -102,16 +104,16 @@ export const fireFireworkConfetti = () => {
             colors: getDistinct(colors, 5),
             angle: 90,
             scalar: 1.5,
-            shapes: ["square", "circle", "star"]
+            shapes: ["square", "circle", "star"],
          });
-      }, getRandomArbitrary(75,200) * index);
+      }, getRandomArbitrary(75, 200) * index);
    });
 };
 
 export const firePoopConfetti = () => {
-   var poop = confetti.shapeFromText({ text: '💩', scalar: 4 });
+   var poop = confetti.shapeFromText({ text: "💩", scalar: 4 });
 
-   explosionPoints.forEach((point, index) => {
+   getExplosionPoints().forEach((point, index) => {
       setTimeout(() => {
          soundEffectController.playSound(
             {
@@ -131,14 +133,14 @@ export const firePoopConfetti = () => {
             angle: 90,
             scalar: 4,
             shapes: [poop],
-            flat: true
+            flat: true,
          });
-      }, getRandomArbitrary(150,250) * index);
+      }, getRandomArbitrary(150, 250) * index);
    });
 };
 
 export const fireEmojiConfetti = () => {
-   explosionPoints.forEach((point, index) => {
+   getExplosionPoints().forEach((point, index) => {
       setTimeout(() => {
          soundEffectController.playSound(
             {
@@ -158,17 +160,16 @@ export const fireEmojiConfetti = () => {
             angle: 90,
             scalar: 4,
             shapes: [
-               confetti.shapeFromText({ text: '🎉', scalar: 4 }),
-               confetti.shapeFromText({ text: '😁', scalar: 4 }),
-               confetti.shapeFromText({ text: '🔥', scalar: 4 }),
-               confetti.shapeFromText({ text: '💎', scalar: 4 }),
-               confetti.shapeFromText({ text: '⭐', scalar: 4 }),
-               confetti.shapeFromText({ text: '😍', scalar: 4 }),
-               confetti.shapeFromText({ text: '❤', scalar: 4 })
+               confetti.shapeFromText({ text: "🎉", scalar: 4 }),
+               confetti.shapeFromText({ text: "😁", scalar: 4 }),
+               confetti.shapeFromText({ text: "🔥", scalar: 4 }),
+               confetti.shapeFromText({ text: "💎", scalar: 4 }),
+               confetti.shapeFromText({ text: "⭐", scalar: 4 }),
+               confetti.shapeFromText({ text: "😍", scalar: 4 }),
+               confetti.shapeFromText({ text: "❤", scalar: 4 }),
             ],
-            flat: false
+            flat: false,
          });
-      }, getRandomArbitrary(150,250) * index);
+      }, getRandomArbitrary(150, 250) * index);
    });
 };
-
