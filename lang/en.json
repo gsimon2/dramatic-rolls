@@ -5,8 +5,8 @@
             "name": "Add Sound Effects",
             "label": "Add sound effects to critical successes and critical failures (fumbles)."
          },
-         "add-confetti": {
-            "name": "Add confetti to criticals",
+         "play-animations": {
+            "name": "Play animations on criticals and fumbles",
             "label": "Recommend disabling this for slower computers"
          },
          "configure-sounds": {

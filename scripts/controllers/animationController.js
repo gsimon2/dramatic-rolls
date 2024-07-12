@@ -8,7 +8,6 @@ import {
    fireEmojiConfetti,
 } from "../animations/confetti.js";
 
-// Add user flag to disable animations
 class Animation {
    constructor(id, name, animationFunction, playSoundEffect = true) {
       this.id = id;
@@ -18,7 +17,9 @@ class Animation {
    }
 
    play = (num) => {
-      this.animationFunction(num);
+      if (game.settings.get(constants.modName, "play-animations")) {
+         this.animationFunction(num);
+      }
    };
 }
 
@@ -57,7 +58,6 @@ class AnimationController {
       this.#setupAnimations();
 
       Hooks.on("ready", () => {
-         // Do we need to check settings before we play?
          game.socket.on(constants.socketName, (data) =>
             this.playById(data.id, data.num)
          );
@@ -69,7 +69,11 @@ class AnimationController {
    };
 
    #playSound = (soundEffect, broadcastSound) => {
-      if (soundEffect && soundEffect.path) {
+      if (
+         soundEffect &&
+         soundEffect.path &&
+         game.settings.get(constants.modName, "add-sound")
+      ) {
          soundEffectController.playSound(
             {
                src: soundEffect.path,
@@ -112,7 +116,6 @@ class AnimationController {
          this.#playSound(soundEffect, shouldBroadcastToOtherPlayers);
       }
 
-      // Do we need to check settings before we play?
       animation.play(num);
 
       if (shouldBroadcastToOtherPlayers) {
@@ -141,7 +144,6 @@ class AnimationController {
          this.#playSound(soundEffect, shouldBroadcastToOtherPlayers);
       }
 
-      // Do we need to check settings before we play?
       animation.play(num);
 
       if (shouldBroadcastToOtherPlayers) {

@@ -48,15 +48,6 @@ export const handleMigrationSettings = () => {
 };
 
 export const registerSettings = () => {
-   game.settings.register(constants.modName, "add-sound", {
-      name: "dramatic-rolls.settings.add-sound.name",
-      hint: "dramatic-rolls.settings.add-sound.label",
-      scope: "world",
-      config: true,
-      default: true,
-      type: Boolean,
-   });
-
    game.settings.registerMenu(constants.modName, "configuration-menu", {
       name: "dramatic-rolls.settings.configure-sounds.name",
       label: "dramatic-rolls.settings.configure-sounds.name",
@@ -103,10 +94,19 @@ export const registerSettings = () => {
       type: Boolean,
    });
 
-   game.settings.register(constants.modName, "add-confetti", {
-      name: "dramatic-rolls.settings.add-confetti.name",
-      // hint: '',
+   game.settings.register(constants.modName, "play-animations", {
+      name: "dramatic-rolls.settings.play-animations.name",
+      hint: "dramatic-rolls.settings.play-animations.label",
       scope: "client",
+      config: true,
+      default: true,
+      type: Boolean,
+   });
+
+   game.settings.register(constants.modName, "add-sound", {
+      name: "dramatic-rolls.settings.add-sound.name",
+      hint: "dramatic-rolls.settings.add-sound.label",
+      scope: "world",
       config: true,
       default: true,
       type: Boolean,
