@@ -121,7 +121,7 @@
    animation: bg 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-.number-pop-container {
+#animation-container {
    position: absolute;
    width: 100%;
    height: 100%;

@@ -1,5 +1,8 @@
 import soundEffectController from "./soundEffectController.js";
-import { setupNumberPop, animateCount } from "../animations/numberPop.js";
+import {
+   numberPop,
+   numberFlyInFallDown,
+} from "../animations/numberAnimations.js";
 import constants from "../../constants.js";
 import {
    fireConfetti,
@@ -28,7 +31,7 @@ class AnimationController {
       this.criticalAnimations = [
          new Animation("confetti", "Confetti", fireConfetti),
          new Animation("number-pop-critical", "Number Pop Critical", (num) =>
-            animateCount(num, true, false)
+            numberPop(num, true, false)
          ),
          new Animation(
             "firework-confetti",
@@ -41,17 +44,27 @@ class AnimationController {
             fireEmojiConfetti,
             false
          ),
+         new Animation(
+            "number-fly-in-fall-down-critical",
+            "Number Fly In Then Fall Down Critical",
+            (num) => numberFlyInFallDown(num, true)
+         ),
       ];
 
       this.fumbleAnimations = [
          new Animation("number-pop-fumble", "Number Pop Fumble", (num) =>
-            animateCount(num, false, true)
+            numberPop(num, false, true)
          ),
          new Animation(
             "poop-confetti",
             "Poop Emoji Confetti",
             firePoopConfetti,
             false
+         ),
+         new Animation(
+            "number-fly-in-fall-down-fumble",
+            "Number Fly In Then Fall Down fumble",
+            (num) => numberFlyInFallDown(num, false)
          ),
       ];
 
@@ -65,7 +78,9 @@ class AnimationController {
    }
 
    #setupAnimations = () => {
-      setupNumberPop();
+      const animationContainer = document.createElement("div");
+      animationContainer.id = "animation-container";
+      document.body.appendChild(animationContainer);
    };
 
    #playSound = (soundEffect, broadcastSound) => {

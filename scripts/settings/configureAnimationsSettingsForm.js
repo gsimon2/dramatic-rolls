@@ -27,18 +27,18 @@ export class ConfigureAnimationSettingsForm extends FormApplication {
          criticalAnimations: animationController.criticalAnimations.map(
             (animation) => ({
                ...animation,
-               ...this.storedSettings.criticalAnimations.find(
+               ...(this.storedSettings.criticalAnimations.find(
                   (a) => animation.id === a.id
-               ) ?? { enabled: true },
+               ) ?? { enabled: true }),
             })
          ),
          fumbleAnimations: animationController.fumbleAnimations.map(
             (animation) => ({
                ...animation,
-               ...this.storedSettings.fumbleAnimations.find(
+               ...(this.storedSettings.fumbleAnimations.find(
                   (a) => animation.id === a.id
-               ),
-            }) ?? { enabled: true },
+               ) ?? { enabled: true }),
+            })
          ),
       };
 
@@ -62,12 +62,16 @@ export class ConfigureAnimationSettingsForm extends FormApplication {
       this.data.criticalAnimations.forEach((animation, index) => {
          html
             .find(`button[id="play-crit-animation-${index}`)
-            .click(((e) => this.onPlayAnimation(e, animation.id, 20)).bind(this));
+            .click(
+               ((e) => this.onPlayAnimation(e, animation.id, 20)).bind(this)
+            );
       });
       this.data.fumbleAnimations.forEach((animation, index) => {
          html
             .find(`button[id="play-fumble-animation-${index}`)
-            .click(((e) => this.onPlayAnimation(e, animation.id, 1)).bind(this));
+            .click(
+               ((e) => this.onPlayAnimation(e, animation.id, 1)).bind(this)
+            );
       });
    }
 
@@ -109,7 +113,7 @@ export class ConfigureAnimationSettingsForm extends FormApplication {
          ),
          fumbleAnimations: this.storedSettings.fumbleAnimations.map(
             (animation) => ({ enabled: animation.enabled, id: animation.id })
-         )
+         ),
       };
 
       game.settings.set(constants.modName, "settings", updatedSettings);
