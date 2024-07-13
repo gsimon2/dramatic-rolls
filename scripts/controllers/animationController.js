@@ -2,7 +2,7 @@ import soundEffectController from "./soundEffectController.js";
 import {
    numberPop,
    numberFlyInFallDown,
-   numberFontSwitch
+   numberFontSwitch,
 } from "../animations/numberAnimations.js";
 import constants from "../../constants.js";
 import {
@@ -10,6 +10,7 @@ import {
    fireFireworkConfetti,
    firePoopConfetti,
    fireEmojiConfetti,
+   fireCrossBonesConfetti,
 } from "../animations/confetti.js";
 
 class Animation {
@@ -54,7 +55,7 @@ class AnimationController {
             "number-font-switch-critical",
             "Number Font Switch Critical",
             (num) => numberFontSwitch(num, true)
-         )
+         ),
       ];
 
       this.fumbleAnimations = [
@@ -68,6 +69,11 @@ class AnimationController {
             false
          ),
          new Animation(
+            "crossbones-confetti",
+            "Crossbones Confetti",
+            fireCrossBonesConfetti
+         ),
+         new Animation(
             "number-fly-in-fall-down-fumble",
             "Number Fly In Then Fall Down fumble",
             (num) => numberFlyInFallDown(num, false)
@@ -76,7 +82,7 @@ class AnimationController {
             "number-font-switch-fumble",
             "Number Font Switch Fumble",
             (num) => numberFontSwitch(num, false)
-         )
+         ),
       ];
 
       this.#setupAnimations();

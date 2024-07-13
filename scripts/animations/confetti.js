@@ -36,6 +36,7 @@ const colors = [
 //    // fireFireworkConfetti();
 //    // firePoopConfetti();
 //    // fireEmojiConfetti();
+//    // fireCrossBonesConfetti();
 // });
 
 const getExplosionPoints = () => {
@@ -47,6 +48,35 @@ const getExplosionPoints = () => {
       { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.7) },
       { x: getRandomArbitrary(0.05, 0.8), y: getRandomArbitrary(0.1, 0.8) },
    ];
+};
+
+const fireCustomShapesConfetti = ({ shapes, soundPath, flat = false, particleCount = 100 }) => {
+   getExplosionPoints().forEach((point, index) => {
+      setTimeout(() => {
+         if (soundPath) {
+            soundEffectController.playSound(
+               {
+                  src: soundPath,
+                  volume: 0.5,
+                  autoplay: true,
+                  loop: false,
+               },
+               true
+            );
+         }
+
+         confetti({
+            particleCount: 100,
+            spread: 360,
+            startVelocity: 20,
+            origin: point,
+            angle: 90,
+            scalar: 4,
+            shapes: shapes,
+            flat: flat,
+         });
+      }, getRandomArbitrary(150, 250) * index);
+   });
 };
 
 export const fireConfetti = () => {
@@ -112,34 +142,29 @@ export const fireFireworkConfetti = () => {
 
 export const firePoopConfetti = () => {
    var poop = confetti.shapeFromText({ text: "💩", scalar: 4 });
-
-   getExplosionPoints().forEach((point, index) => {
-      setTimeout(() => {
-         soundEffectController.playSound(
-            {
-               src: `modules/${constants.modName}/sounds/fumble/fart.mp3`,
-               volume: 0.5,
-               autoplay: true,
-               loop: false,
-            },
-            true
-         );
-
-         confetti({
-            particleCount: 100,
-            spread: 360,
-            startVelocity: 20,
-            origin: point,
-            angle: 90,
-            scalar: 4,
-            shapes: [poop],
-            flat: true,
-         });
-      }, getRandomArbitrary(150, 250) * index);
+   fireCustomShapesConfetti({
+      shapes: [poop],
+      soundPath: `modules/${constants.modName}/sounds/fumble/fart.mp3`,
+      flat: true,
    });
 };
 
 export const fireEmojiConfetti = () => {
+   fireCustomShapesConfetti({
+      shapes: [
+         confetti.shapeFromText({ text: "🎉", scalar: 4 }),
+         confetti.shapeFromText({ text: "😁", scalar: 4 }),
+         confetti.shapeFromText({ text: "🔥", scalar: 4 }),
+         confetti.shapeFromText({ text: "💎", scalar: 4 }),
+         confetti.shapeFromText({ text: "⭐", scalar: 4 }),
+         confetti.shapeFromText({ text: "😍", scalar: 4 }),
+         confetti.shapeFromText({ text: "❤", scalar: 4 }),
+      ],
+      soundPath: `modules/${constants.modName}/sounds/crit/magical-twinkle-sparkle-whoosh.mp3`,
+      flat: false,
+      particleCount: 80
+   });
+
    getExplosionPoints().forEach((point, index) => {
       setTimeout(() => {
          soundEffectController.playSound(
@@ -171,5 +196,15 @@ export const fireEmojiConfetti = () => {
             flat: false,
          });
       }, getRandomArbitrary(150, 250) * index);
+   });
+};
+
+export const fireCrossBonesConfetti = () => {
+   const crossbones = confetti.shapeFromText({ text: "☠", scalar: 4 });
+   fireCustomShapesConfetti({
+      shapes: [crossbones],
+      // Need a better sound file for this
+      // soundPath: `modules/${constants.modName}/sounds/fumble/crowd-aww.mp3`,
+      flat: true,
    });
 };
