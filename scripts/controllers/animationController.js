@@ -2,6 +2,7 @@ import soundEffectController from "./soundEffectController.js";
 import {
    numberPop,
    numberFlyInFallDown,
+   numberFontSwitch
 } from "../animations/numberAnimations.js";
 import constants from "../../constants.js";
 import {
@@ -49,6 +50,11 @@ class AnimationController {
             "Number Fly In Then Fall Down Critical",
             (num) => numberFlyInFallDown(num, true)
          ),
+         new Animation(
+            "number-font-switch-critical",
+            "Number Font Switch Critical",
+            (num) => numberFontSwitch(num, true)
+         )
       ];
 
       this.fumbleAnimations = [
@@ -66,6 +72,11 @@ class AnimationController {
             "Number Fly In Then Fall Down fumble",
             (num) => numberFlyInFallDown(num, false)
          ),
+         new Animation(
+            "number-font-switch-fumble",
+            "Number Font Switch Fumble",
+            (num) => numberFontSwitch(num, false)
+         )
       ];
 
       this.#setupAnimations();

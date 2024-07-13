@@ -1,10 +1,11 @@
 import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.npmjs.com/package/canvas-confetti
 import { getDistinct } from "../utils.js";
 
-document.body.addEventListener("click", () => {
-   // numberPop(20, true, false);
-   // numberFlyInFallDown(20);
-});
+// document.body.addEventListener("click", () => {
+//    // numberPop(20, true, false);
+//    // numberFlyInFallDown(20);
+//    // numberFontSwitch(20);
+// });
 
 const happyColors = [
    "#fbda61",
@@ -34,6 +35,18 @@ const sadColors = [
    "#6f2e2e",
 ];
 
+const getBasicNumberStyling = (num, colorPicks) => ({
+   innerText: num,
+   backgroundImage: `radial-gradient(circle, ${colorPicks[0]}, ${colorPicks[1]})`,
+   filter: `drop-shadow(${colorPicks[1]} 1px 1px 0) drop-shadow(${colorPicks[0]} 2px 2px 2px)`,
+   backgroundClip: "text",
+   color: "transparent",
+   fontSize: "0vh",
+   // fontFamily: "FontAwesome",
+   webkitTextStroke: "1px white",
+   transformOrigin: "bottom center",
+});
+
 const prepAnimation = (className) => {
    if (document.getElementById("animation")) {
       document.getElementById("animation").remove();
@@ -49,13 +62,13 @@ const prepAnimation = (className) => {
    animationContainer.appendChild(el);
 
    return el;
-}
+};
 
 // based on Confetti! https://www.kirilv.com/canvas-confetti/
 export function numberPop(num, isCrit, isFumble) {
    const el = prepAnimation("counter celebrate");
    const colorPicks = getDistinct(isCrit ? happyColors : sadColors, 2);
-   const tl = gsap.timeline();
+   const t1 = gsap.timeline();
 
    if (isCrit || isFumble) {
       confetti({
@@ -69,7 +82,7 @@ export function numberPop(num, isCrit, isFumble) {
       });
    }
 
-   tl.set(el, {
+   t1.set(el, {
       opacity: 1,
       backgroundImage: `linear-gradient(45deg, ${colorPicks[1]}, ${colorPicks[0]}, ${colorPicks[1]})`,
       filter: `drop-shadow(white 1px 1px 0) drop-shadow(${colorPicks[0]} 2px 2px 2px)`,
@@ -96,7 +109,7 @@ export function numberPop(num, isCrit, isFumble) {
          opacity: 0,
          delay: 1,
          onComplete: () => {
-            tl.kill();
+            t1.kill();
             el.remove();
          },
       });
@@ -108,15 +121,8 @@ export const numberFlyInFallDown = (num, useHappyColors = true) => {
    const colorPicks = getDistinct(useHappyColors ? happyColors : sadColors, 2);
 
    t1.set(el, {
-      innerText: num,
-      backgroundImage: `radial-gradient(circle, ${colorPicks[0]}, ${colorPicks[1]})`,
-      filter: `drop-shadow(${colorPicks[1]} 1px 1px 0) drop-shadow(${colorPicks[0]} 2px 2px 2px)`,
-      backgroundClip: "text",
-      color: "transparent",
-      fontSize: "0vh",
+      ...getBasicNumberStyling(num, colorPicks),
       fontFamily: "FontAwesome",
-      webkitTextStroke: "1px white",
-      transformOrigin: "bottom center",
    })
       .to(el, { fontSize: "45vh", duration: 1, ease: "back.out(4)" })
       .to(el, {
@@ -126,4 +132,50 @@ export const numberFlyInFallDown = (num, useHappyColors = true) => {
             el.remove();
          },
       });
+};
+
+export const numberFontSwitch = (num, useHappyColors = true) => {
+   const el = prepAnimation();
+   const t1 = gsap.timeline();
+   const colorPicks = getDistinct(useHappyColors ? happyColors : sadColors, 2);
+
+   const fontPool = [
+      "FontAwesome",
+      "Amiri",
+      "Modesto Condensed",
+      "Bruno Ace",
+      "Gelasio",
+      "La Belle Aurore",
+      "Roboto",
+      "Roboto Mono",
+      "Vollkorn",
+      "fantasy",
+      "system-ui",
+      "cursive",
+   ];
+
+   const fonts = getDistinct(fontPool, 7);
+
+   t1.set(el, getBasicNumberStyling(num, colorPicks)).to(el, {
+      fontSize: "45vh",
+      fontFamily: fonts[0],
+      duration: 0.25,
+   });
+
+   fonts.forEach((font) => {
+      t1.to(el, {
+         fontFamily: font,
+         duration: 0.25,
+      });
+   });
+
+   t1.to(el, {
+      opacity: 0,
+      duration: 0.75,
+      ease: "power1",
+      onComplete: () => {
+         t1.kill();
+         el.remove();
+      },
+   });
 };
