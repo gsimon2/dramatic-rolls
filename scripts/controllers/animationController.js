@@ -12,6 +12,7 @@ import {
    fireEmojiConfetti,
    fireCrossBonesConfetti,
 } from "../animations/confetti.js";
+import { ufoAnimation } from '../animations/ufoAnimations.js';
 
 class Animation {
    constructor(id, name, animationFunction, playSoundEffect = true) {
