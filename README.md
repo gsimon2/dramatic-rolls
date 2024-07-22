@@ -6,7 +6,7 @@
 
 A simple module for [FoundryVtt](https://foundryvtt.com/) that addes a little excitement to natural 20s and natural 1s.
 
-![](natty20.gif)
+![natty20](https://github.com/user-attachments/assets/27da69c0-abb8-420f-81bc-01076e709937)
 
 ## Usage Instructions
 By default this module comes with a sets of sounds that will be triggered on either natural 20s or 1s. These sounds can be configured via the "Configure Settings" menu. Custom sounds can also be added, but the file must be located under the `FoundryVtt/Data` directory. To add sounds go to "Configure Settings -> Module Settings" and open the Dramatic Rolls "Configure Sounds" menu. 
