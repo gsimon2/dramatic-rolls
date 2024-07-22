@@ -44,7 +44,7 @@ const ufo = `
 `;
 
 const prepAnimation = () => {
-   const animationId = "ufo-container";
+   const animationId = "animation";
    if (document.getElementById(animationId)) {
       document.getElementById(animationId).remove();
    }
@@ -150,7 +150,7 @@ export const ufoDropText = (text) => {
    t1.to(ufo, {
       x: 250,
       y: 0,
-      duration: 1.5,
+      duration: 1,
       ease: "power2.out",
    })
       // Ease back to vertical orientation
@@ -158,7 +158,7 @@ export const ufoDropText = (text) => {
          ufo,
          {
             rotateZ: 0,
-            duration: 2.5,
+            duration: 2,
             ease: "elastic.out(1.65,0.5)",
          },
          "<65%"
@@ -168,7 +168,7 @@ export const ufoDropText = (text) => {
          beam,
          {
             opacity: 0.8,
-            duration: 1,
+            duration: 0.75,
             ease: "power2.out",
          },
          "<75%"
@@ -177,7 +177,7 @@ export const ufoDropText = (text) => {
    // Drop in number
    t1.to(number, {
       opacity: 1,
-      duration: 1.5,
+      duration: 0.75,
       top: "70%",
       ease: "power3.out",
    });
@@ -185,14 +185,14 @@ export const ufoDropText = (text) => {
    // Fade out the beam
    t1.to(beam, {
       opacity: 0,
-      duration: 1,
+      duration: 0.75,
       ease: "power2.out",
    })
       // Fly out
       .to(ufo, {
          x: 1000,
          y: -200,
-         duration: 2.5,
+         duration: 2,
          ease: "power2.out",
       })
       // Grow number
