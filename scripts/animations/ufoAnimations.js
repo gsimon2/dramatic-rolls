@@ -66,7 +66,47 @@ const prepAnimation = () => {
    };
 };
 
-export const ufoAnimation = (text) => {
+const ufoLights = (tl) => {
+   tl.set(".ufoLightGroup circle", { fillOpacity: "0" });
+   tl.to(".ufoLightGroup circle", {
+      fillOpacity: "1",
+      duration: 0.3,
+      stagger: 0.3,
+      repeat: -1,
+      repeatDelay: 2,
+   }).to(".ufoLightGroup circle", {
+      fillOpacity: "0",
+      duration: 0.3,
+      stagger: 0.3,
+      repeat: -1,
+      repeatDelay: 2,
+   });
+};
+
+const makeBeep = (tl) => {
+   var clone = document.getElementById("beep").cloneNode(true);
+   document.getElementById("ufo").appendChild(clone);
+   tl.fromTo(
+      clone,
+      0.6,
+      {
+         attr: {
+            r: 2,
+         },
+         strokeWidth: 10,
+      },
+      {
+         attr: {
+            r: 30,
+         },
+         strokeWidth: 0,
+         repeat: -1,
+         repeatDelay: 1,
+      }
+   );
+};
+
+export const ufoDropText = (text) => {
    const { ufo, ufoContainer, beam, number } = prepAnimation();
    // Sequencing
    const t1 = gsap.timeline();
@@ -77,7 +117,7 @@ export const ufoAnimation = (text) => {
    t1.set(ufoContainer, {
       height: "100vh",
       width: "100vw",
-      pointerEvents: "none"
+      pointerEvents: "none",
    })
       .set(ufo, {
          opacity: 1,
@@ -95,7 +135,7 @@ export const ufoAnimation = (text) => {
          width: "100%",
          textAlign: "center",
          top: "52%",
-         fontSize: text.length > 2 ? "2rem" :"3rem",
+         fontSize: text.length > 2 ? "2rem" : "3rem",
          webkitTextStroke: "1px white",
          fontFamily: "FontAwesome",
          color: "green",
@@ -161,7 +201,7 @@ export const ufoAnimation = (text) => {
          {
             // fontSize: "10rem",
             scale: 4,
-            duration: 1.5
+            duration: 1.5,
          },
          "<"
       )
@@ -181,45 +221,7 @@ export const ufoAnimation = (text) => {
       );
 };
 
-const ufoLights = (tl) => {
-   tl.set(".ufoLightGroup circle", { fillOpacity: "0" });
-   tl.to(".ufoLightGroup circle", {
-      fillOpacity: "1",
-      duration: 0.3,
-      stagger: 0.3,
-      repeat: -1,
-      repeatDelay: 2,
-   }).to(".ufoLightGroup circle", {
-      fillOpacity: "0",
-      duration: 0.3,
-      stagger: 0.3,
-      repeat: -1,
-      repeatDelay: 2,
-   });
-};
-function makeBeep(tl) {
-   var clone = document.getElementById("beep").cloneNode(true);
-   document.getElementById("ufo").appendChild(clone);
-   tl.fromTo(
-      clone,
-      0.6,
-      {
-         attr: {
-            r: 2,
-         },
-         strokeWidth: 10,
-      },
-      {
-         attr: {
-            r: 30,
-         },
-         strokeWidth: 0,
-         repeat: -1,
-         repeatDelay: 1,
-      }
-   );
-}
-
-document.body.addEventListener("click", () => {
-   ufoAnimation('crit!');
-});
+// document.body.addEventListener("click", () => {
+//    // ufoAnimation('crit!');
+//    ufoDropText("20");
+// });

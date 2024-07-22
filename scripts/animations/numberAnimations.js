@@ -2,9 +2,9 @@ import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.n
 import { getDistinct } from "../utils.js";
 
 // document.body.addEventListener("click", () => {
-//    // numberPop(20, true, false);
-//    // numberFlyInFallDown(20);
-//    // numberFontSwitch(20);
+//    // numberPop("20", true, false);
+//    // numberFlyInFallDown('Crit!');
+//    // numberFontSwitch('Fumble!');
 // });
 
 const happyColors = [
@@ -64,6 +64,10 @@ const prepAnimation = (className) => {
    return el;
 };
 
+const getFontSize = (num) => {
+   return num.toString().length > 2 ? "20vh" : "45vh";
+};
+
 // based on Confetti! https://www.kirilv.com/canvas-confetti/
 export function numberPop(num, isCrit, isFumble) {
    const el = prepAnimation("counter celebrate");
@@ -100,7 +104,7 @@ export function numberPop(num, isCrit, isFumble) {
          }
       )
       .to(el, {
-         scale: 3,
+         scale: num.toString().length > 2 ? 1 : 3,
          "--font-variation-weight": 600,
          ease: "elastic.out(1, 0.2)",
          duration: 1.2,
@@ -124,7 +128,7 @@ export const numberFlyInFallDown = (num, useHappyColors = true) => {
       ...getBasicNumberStyling(num, colorPicks),
       fontFamily: "FontAwesome",
    })
-      .to(el, { fontSize: "45vh", duration: 1, ease: "back.out(4)" })
+      .to(el, { fontSize: getFontSize(num), duration: 1, ease: "back.out(4)" })
       .to(el, {
          rotationX: 90,
          onComplete: () => {
@@ -157,7 +161,7 @@ export const numberFontSwitch = (num, useHappyColors = true) => {
    const fonts = getDistinct(fontPool, 7);
 
    t1.set(el, getBasicNumberStyling(num, colorPicks)).to(el, {
-      fontSize: "45vh",
+      fontSize: getFontSize(num),
       fontFamily: fonts[0],
       duration: 0.25,
    });

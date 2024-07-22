@@ -12,7 +12,7 @@ import {
    fireEmojiConfetti,
    fireCrossBonesConfetti,
 } from "../animations/confetti.js";
-import { ufoAnimation } from '../animations/ufoAnimations.js';
+import { ufoDropText } from '../animations/ufoAnimations.js';
 
 class Animation {
    constructor(id, name, animationFunction, playSoundEffect = true) {
@@ -57,6 +57,12 @@ class AnimationController {
             "Number Font Switch Critical",
             (num) => numberFontSwitch(num, true)
          ),
+         new Animation(
+            "ufo-drop-text",
+            "UFO Drop Text",
+            (text) => ufoDropText(text),
+            false
+         )
       ];
 
       this.fumbleAnimations = [

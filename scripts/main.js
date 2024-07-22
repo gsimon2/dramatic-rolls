@@ -1,8 +1,10 @@
-import { registerSettings, handleMigrationSettings } from "./settings/settings.js";
+import {
+   registerSettings,
+   handleMigrationSettings,
+} from "./settings/settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
-import animationController from './controllers/animationController.js';
-
+import animationController from "./controllers/animationController.js";
 
 Hooks.on("init", () => {
    registerSettings();
@@ -26,16 +28,22 @@ export const handleEffects = (roll, isPublic = true) => {
       !game.settings.get(constants.modName, "trigger-on-public-only");
    const shouldBroadcastToOtherPlayers = isPublic;
    const summarizedDieRolls = getSummarizedDieRolls(roll);
-   const isCrit = determineIfCrit(summarizedDieRolls);
-   const isFumble = determineIfFumble(summarizedDieRolls);
+   const { isCrit, isOverrideCrit } = determineIfCrit(summarizedDieRolls);
+   const { isFumble, isOverrideFumble } = determineIfFumble(summarizedDieRolls);
 
    if (shouldPlay && isCrit) {
-      animationController.playCriticalAnimation(summarizedDieRolls[0].result, shouldBroadcastToOtherPlayers);
+      animationController.playCriticalAnimation(
+         isOverrideCrit ? 'Crit!' : summarizedDieRolls[0].result,
+         shouldBroadcastToOtherPlayers
+      );
    }
 
    if (shouldPlay && isFumble) {
-      animationController.playFumbleAnimation(summarizedDieRolls[0].result, shouldBroadcastToOtherPlayers);
-   }  
+      animationController.playFumbleAnimation(
+         isOverrideFumble ? 'Fumble!' : summarizedDieRolls[0].result,
+         shouldBroadcastToOtherPlayers
+      );
+   }
 };
 
 const getIsRollOverrideCrit = (roll) => {
@@ -85,21 +93,35 @@ const getSummarizedDieRolls = (rolls) => {
 };
 
 const determineIfCrit = (summarizedDieRolls) => {
-   return !!(
-      summarizedDieRolls
-         .filter((r) => r.faces === 20)
-         .some((r) => r.result === 20) ||
-      summarizedDieRolls.some((r) => r.isOverrideCrit) ||
-      constants.overrideCrit
-   );
+   return {
+      isCrit: !!(
+         summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 20) ||
+         summarizedDieRolls.some((r) => r.isOverrideCrit) ||
+         constants.overrideCrit
+      ),
+      isOverrideCrit:
+         !summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 20) &&
+         summarizedDieRolls.some((r) => r.isOverrideCrit),
+   };
 };
 
 const determineIfFumble = (summarizedDieRolls) => {
-   return !!(
-      summarizedDieRolls
-         .filter((r) => r.faces === 20)
-         .some((r) => r.result === 1) ||
-      summarizedDieRolls.some((r) => r.isOverrideFumble) ||
-      constants.overrideFumble
-   );
+   return {
+      isFumble: !!(
+         summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 1) ||
+         summarizedDieRolls.some((r) => r.isOverrideFumble) ||
+         constants.overrideFumble
+      ),
+      isOverrideFumble:
+         !summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 1) &&
+         summarizedDieRolls.some((r) => r.isOverrideFumble),
+   };
 };
