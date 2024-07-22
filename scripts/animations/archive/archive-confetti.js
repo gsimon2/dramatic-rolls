@@ -1,7 +1,7 @@
 // Copy pasted and modified from this codepen: https://codepen.io/anthonygreco/pen/PGPVJz
 import gsap, { Physics2DPlugin } from "/scripts/greensock/esm/all.js";
-import constants from "../constants.js";
-import soundEffectController from "./soundEffectController.js";
+import constants from "../../../constants.js";
+import soundEffectController from "../../soundEffectController.js";
 
 gsap.registerPlugin(Physics2DPlugin);
 

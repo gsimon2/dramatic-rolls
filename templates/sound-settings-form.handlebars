@@ -1,0 +1,166 @@
+<div class="tab active" data-tab="general">
+   <form autocomplete="off" class="dramatic-rolls setting-form">
+
+      <span class="list-header">{{localize
+            "dramatic-rolls.configure-sounds-settings-form.critical-sounds-list-title"
+         }}</span>
+      <ul id="crit-sounds-list">
+         {{#each critSounds}}
+            <li class="form-group sound-option-group">
+               <div class="group-line">
+                  <input
+                     type="checkbox"
+                     name="critEnabled"
+                     id="enable-crit-sound-{{@index}}"
+                     data-dtype="Boolean"
+                     {{checked this.enabled}}
+                     title="{{localize
+                        'dramatic-rolls.configure-sounds-settings-form.enableDisableSound'
+                     }}"
+                  />
+                  <input
+                     type="text"
+                     data-dtype="String"
+                     class="sound-path-input"
+                     value={{this.path}}
+                     title="{{this.path}}"
+                     readonly
+                  />
+                  {{#if this.isUserAddedSound}}
+                     <button
+                        id="delete-crit-sound-{{@index}}"
+                        title="{{localize
+                           'dramatic-rolls.configure-sounds-settings-form.removeSound'
+                        }}"
+                     >
+                        <i class="fas fa-minus-circle"></i>
+                     </button>
+                  {{/if}}
+                  <button
+                     id="play-crit-sound-{{@index}}"
+                     title="{{localize
+                        'dramatic-rolls.configure-sounds-settings-form.playSound'
+                     }}"
+                  >
+                     <i class="fas fa-play-circle"></i>
+                  </button>
+               </div>
+               <div class="group-line">
+                  <label class="volume-label">{{localize
+                        "dramatic-rolls.configure-sounds-settings-form.soundVolume"
+                     }}</label>
+                  <input
+                     type="range"
+                     name="crit-volume"
+                     id="crit-sound-volume-{{@index}}"
+                     min="0"
+                     max="1"
+                     step="0.01"
+                     class="volume-slider"
+                     value="{{this.volume}}"
+                  />
+                  <input
+                     type="text"
+                     class="volume-display"
+                     id="crit-sound-volume-{{@index}}-display"
+                     readonly
+                     value="{{this.volume}}"
+                  />
+               </div>
+            </li>
+         {{/each}}
+      </ul>
+      <div class="add-button-wrapper">
+         <button id="add-crit-sound-button">{{localize
+               "dramatic-rolls.configure-sounds-settings-form.addCritSound"
+            }}</button>
+      </div>
+
+      <span class="list-header">{{localize
+            "dramatic-rolls.configure-sounds-settings-form.fumble-sounds-list-title"
+         }}</span>
+      <ul id="fumble-sounds-list">
+         {{#each fumbleSounds}}
+            <li class="form-group sound-option-group">
+               <div class="group-line">
+                  <input
+                     type="checkbox"
+                     name="fumbleEnabled"
+                     id="enable-fumble-sound-{{@index}}"
+                     data-dtype="Boolean"
+                     {{checked this.enabled}}
+                     title="{{localize
+                        'dramatic-rolls.configure-sounds-settings-form.enableDisableSound'
+                     }}"
+                  />
+                  <input
+                     type="text"
+                     data-dtype="String"
+                     class="sound-path-input"
+                     readonly
+                     value={{this.path}}
+                     title="{{this.path}}"
+                     readonly
+                  />
+                  {{#if this.isUserAddedSound}}
+                     <button
+                        id="delete-fumble-sound-{{@index}}"
+                        title="{{localize
+                           'dramatic-rolls.configure-sounds-settings-form.removeSound'
+                        }}"
+                     >
+                        <i class="fas fa-minus-circle"></i>
+                     </button>
+                  {{/if}}
+                  <button
+                     id="play-fumble-sound-{{@index}}"
+                     title="{{localize
+                        'dramatic-rolls.configure-sounds-settings-form.playSound'
+                     }}"
+                  >
+                     <i class="fas fa-play-circle"></i>
+                  </button>
+               </div>
+               <div class="group-line">
+                  <label class="volume-label">{{localize
+                        "dramatic-rolls.configure-sounds-settings-form.soundVolume"
+                     }}</label>
+                  <input
+                     type="range"
+                     name="fumble-volume"
+                     id="fumble-sound-volume-{{@index}}"
+                     min="0"
+                     max="1"
+                     step="0.01"
+                     class="volume-slider"
+                     value="{{this.volume}}"
+                  />
+                  <input
+                     type="text"
+                     class="volume-display"
+                     id="fumble-sound-volume-{{@index}}-display"
+                     readonly
+                     value="{{this.volume}}"
+                  />
+               </div>
+            </li>
+         {{/each}}
+      </ul>
+      <div class="add-button-wrapper">
+         <button id="add-fumble-sound-button">{{localize
+               "dramatic-rolls.configure-sounds-settings-form.addFumbleSound"
+            }}</button>
+      </div>
+
+      <div class="form-group" style="margin: 10px;">
+         <button type="submit" name="submit">
+            <i class="fas fa-save"></i>
+            {{localize "dramatic-rolls.configure-sounds-settings-form.save"}}
+         </button>
+         <button type="button" name="reset">
+            <i class="fas fa-undo"></i>
+            {{localize "dramatic-rolls.configure-sounds-settings-form.reset"}}
+         </button>
+      </div>
+   </form>
+</div>

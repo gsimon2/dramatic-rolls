@@ -1,25 +1,25 @@
-import soundEffectController from "./soundEffectController.js";
-import { registerSettings } from "./settings.js";
+import {
+   registerSettings,
+   handleMigrationSettings,
+} from "./settings/settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
-import { setupConfetti, fireConfetti } from "./confetti.js";
-
-const socketName = `module.${constants.modName}`;
+import animationController from "./controllers/animationController.js";
 
 Hooks.on("init", () => {
    registerSettings();
+
    if (constants.debugMode) {
       CONFIG.debug.hooks = true;
+      CONFIG.debug.audio = true;
+      CONFIG.debug.dice = true;
+      CONFIG.debug.rollParsing = true;
    }
 });
 
 Hooks.on("ready", () => {
+   handleMigrationSettings();
    initRollCollection();
-   setupConfetti();
-
-   if (game.settings.get(constants.modName, "add-confetti")) {
-      game.socket.on(socketName, fireConfetti);
-   }
 });
 
 export const handleEffects = (roll, isPublic = true) => {
@@ -28,25 +28,22 @@ export const handleEffects = (roll, isPublic = true) => {
       !game.settings.get(constants.modName, "trigger-on-public-only");
    const shouldBroadcastToOtherPlayers = isPublic;
    const summarizedDieRolls = getSummarizedDieRolls(roll);
-   const isCrit = determineIfCrit(summarizedDieRolls);
-   const isFumble = determineIfFumble(summarizedDieRolls);
+   const { isCrit, isOverrideCrit } = determineIfCrit(summarizedDieRolls);
+   const { isFumble, isOverrideFumble } = determineIfFumble(summarizedDieRolls);
 
-   if (isFumble) {
-      roll = foundry.utils.mergeObject(roll, {
-         soundEffect: soundEffectController.getFumbleSoundEffect(),
-      });
+   if (shouldPlay && isCrit) {
+      animationController.playCriticalAnimation(
+         isOverrideCrit ? 'Crit!' : summarizedDieRolls[0].result,
+         shouldBroadcastToOtherPlayers
+      );
    }
 
-   if (isCrit) {
-      roll = foundry.utils.mergeObject(roll, {
-         soundEffect: soundEffectController.getCritSoundEffect(),
-      });
+   if (shouldPlay && isFumble) {
+      animationController.playFumbleAnimation(
+         isOverrideFumble ? 'Fumble!' : summarizedDieRolls[0].result,
+         shouldBroadcastToOtherPlayers
+      );
    }
-
-   shouldPlay && isCrit && handleConfetti(shouldBroadcastToOtherPlayers);
-   shouldPlay &&
-      game.settings.get(constants.modName, "add-sound") &&
-      playSound(roll, shouldBroadcastToOtherPlayers);
 };
 
 const getIsRollOverrideCrit = (roll) => {
@@ -96,46 +93,35 @@ const getSummarizedDieRolls = (rolls) => {
 };
 
 const determineIfCrit = (summarizedDieRolls) => {
-   return !!(
-      summarizedDieRolls
-         .filter((r) => r.faces === 20)
-         .some((r) => r.result === 20) ||
-      summarizedDieRolls.some((r) => r.isOverrideCrit) ||
-      constants.debugMode
-   );
+   return {
+      isCrit: !!(
+         summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 20) ||
+         summarizedDieRolls.some((r) => r.isOverrideCrit) ||
+         constants.overrideCrit
+      ),
+      isOverrideCrit:
+         !summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 20) &&
+         summarizedDieRolls.some((r) => r.isOverrideCrit),
+   };
 };
 
 const determineIfFumble = (summarizedDieRolls) => {
-   return !!(
-      summarizedDieRolls
-         .filter((r) => r.faces === 20)
-         .some((r) => r.result === 1) ||
-      summarizedDieRolls.some((r) => r.isOverrideFumble)
-   );
-};
-
-const playSound = (roll, broadcastSound) => {
-   const soundEffect = roll.soundEffect;
-
-   if (soundEffect && soundEffect.path) {
-      soundEffectController.playSound(
-         {
-            src: soundEffect.path,
-            volume: soundEffect.volume,
-            autoplay: true,
-            loop: false,
-         },
-         broadcastSound
-      );
-   }
-};
-
-const handleConfetti = (shouldBroadcastToOtherPlayers) => {
-   if (game.settings.get(constants.modName, "add-confetti")) {
-      fireConfetti();
-   }
-
-   if (shouldBroadcastToOtherPlayers) {
-      game.socket.emit(socketName);
-   }
+   return {
+      isFumble: !!(
+         summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 1) ||
+         summarizedDieRolls.some((r) => r.isOverrideFumble) ||
+         constants.overrideFumble
+      ),
+      isOverrideFumble:
+         !summarizedDieRolls
+            .filter((r) => r.faces === 20)
+            .some((r) => r.result === 1) &&
+         summarizedDieRolls.some((r) => r.isOverrideFumble),
+   };
 };

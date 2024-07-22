@@ -1,6 +1,8 @@
-import constants from "../constants.js";
-import { DramaticRollsSettingsForm } from "./settingsForm.js";
-import soundEffectController from "./soundEffectController.js";
+import constants from "../../constants.js";
+import { ConfigureSoundSettingsForm } from "./configureSoundSettingsForm.js";
+import { ConfigureAnimationSettingsForm } from "./configureAnimationsSettingsForm.js";
+import soundEffectController from "../controllers/soundEffectController.js";
+import animationController from "../controllers/animationController.js";
 
 export const defaultSettings = {
    critSounds: soundEffectController.critSoundEffectFiles.map(
@@ -19,25 +21,50 @@ export const defaultSettings = {
          volume: 1.0,
       })
    ),
+   criticalAnimations: animationController.criticalAnimations.map(
+      (animation) => ({
+         enabled: true,
+         id: animation.id,
+      })
+   ),
+   fumbleAnimations: animationController.fumbleAnimations.map((animation) => ({
+      enabled: true,
+      id: animation.id,
+   })),
+};
+
+export const handleMigrationSettings = () => {
+   const settings = game.settings.get(constants.modName, "settings");
+
+   // Add settings for the animations if they are not already present
+   if (!settings.criticalAnimations) {
+      settings.criticalAnimations = defaultSettings.criticalAnimations;
+   }
+   if (!settings.fumbleAnimations) {
+      settings.fumbleAnimations = defaultSettings.fumbleAnimations;
+   }
+
+   game.settings.set(constants.modName, "settings", settings);
 };
 
 export const registerSettings = () => {
-   game.settings.register(constants.modName, "add-sound", {
-      name: "dramatic-rolls.settings.add-sound.name",
-      hint: "dramatic-rolls.settings.add-sound.label",
-      scope: "world",
-      config: true,
-      default: true,
-      type: Boolean,
-   });
-
    game.settings.registerMenu(constants.modName, "configuration-menu", {
       name: "dramatic-rolls.settings.configure-sounds.name",
       label: "dramatic-rolls.settings.configure-sounds.name",
       hint: "dramatic-rolls.settings.configure-sounds.label",
       icon: "fas fa-cogs",
-      type: DramaticRollsSettingsForm,
-      scope: 'world',
+      type: ConfigureSoundSettingsForm,
+      scope: "world",
+      restricted: true,
+   });
+
+   game.settings.registerMenu(constants.modName, "animation-menu", {
+      name: "dramatic-rolls.settings.configure-animations.name",
+      label: "dramatic-rolls.settings.configure-animations.name",
+      hint: "dramatic-rolls.settings.configure-animations.label",
+      icon: "fas fa-cogs",
+      type: ConfigureAnimationSettingsForm,
+      scope: "world",
       restricted: true,
    });
 
@@ -67,10 +94,19 @@ export const registerSettings = () => {
       type: Boolean,
    });
 
-   game.settings.register(constants.modName, "add-confetti", {
-      name: "dramatic-rolls.settings.add-confetti.name",
-      // hint: '',
+   game.settings.register(constants.modName, "play-animations", {
+      name: "dramatic-rolls.settings.play-animations.name",
+      hint: "dramatic-rolls.settings.play-animations.label",
       scope: "client",
+      config: true,
+      default: true,
+      type: Boolean,
+   });
+
+   game.settings.register(constants.modName, "add-sound", {
+      name: "dramatic-rolls.settings.add-sound.name",
+      hint: "dramatic-rolls.settings.add-sound.label",
+      scope: "world",
       config: true,
       default: true,
       type: Boolean,

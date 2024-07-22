@@ -1,13 +1,13 @@
-import constants from "../constants.js";
-import soundEffectController from "./soundEffectController.js";
+import constants from "../../constants.js";
+import soundEffectController from "../controllers/soundEffectController.js";
 import { defaultSettings } from "./settings.js";
 
-export class DramaticRollsSettingsForm extends FormApplication {
+export class ConfigureSoundSettingsForm extends FormApplication {
    static get defaultOptions() {
       return foundry.utils.mergeObject(super.defaultOptions, {
-         title: game.i18n.localize(`${constants.modName}.settings-form.title`),
-         id: `${constants.modName}-settings-form`,
-         template: `modules/${constants.modName}/templates/settings-form.handlebars`,
+         title: game.i18n.localize(`${constants.modName}.configure-sounds-settings-form.title`),
+         id: `${constants.modName}-configure-sounds-settings-form`,
+         template: `modules/${constants.modName}/templates/sound-settings-form.handlebars`,
          width: 500,
          closeOnSubmit: true,
          scrollY: ["#crit-sounds-list", "#fumble-sounds-list"],
@@ -195,6 +195,7 @@ export class DramaticRollsSettingsForm extends FormApplication {
 
    _updateObject(events, formData) {
       let updatedSettings = {
+         ...game.settings.get(constants.modName, "settings"),
          critSounds: JSON.parse(JSON.stringify(this.storedSettings.critSounds)),
          fumbleSounds: JSON.parse(
             JSON.stringify(this.storedSettings.fumbleSounds)

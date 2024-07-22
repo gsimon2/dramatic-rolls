@@ -1,97 +1,103 @@
 .dramatic-rolls.setting-form ul {
-    padding: 0;
-    max-height: 18rem;
-    overflow: auto;
-    border: black solid 1px;
-    border-radius: 0.25rem;
-    box-shadow: inset 0 -10px 10px -10px #3a3939;
+   padding: 0;
+   max-height: 18rem;
+   overflow: auto;
+   border: black solid 1px;
+   border-radius: 0.25rem;
+   box-shadow: inset 0 -10px 10px -10px #3a3939;
+}
+
+.dramatic-rolls.setting-form .animation-name {
+   width: 100%;
+   text-align: center;
+   line-height: 28px;
 }
 
 .dramatic-rolls.setting-form .sound-option-group {
-    flex-wrap: nowrap;
-    padding-bottom: 0.5rem;
-    flex-direction: column;
+   flex-wrap: nowrap;
+   padding-bottom: 0.5rem;
+   flex-direction: column;
 }
 
 .dramatic-rolls.setting-form .sound-option-group .group-line {
-    width: 100%;
-    display: flex;
+   width: 100%;
+   display: flex;
 }
 
 .dramatic-rolls.setting-form .sound-option-group .volume-label {
-    height: 1.5rem;
-    line-height: 1rem;
-    white-space: nowrap;
-    padding: 0.25rem 0.5rem;
+   height: 1.5rem;
+   line-height: 1rem;
+   white-space: nowrap;
+   padding: 0.25rem 0.5rem;
 }
 
 .dramatic-rolls.setting-form .sound-option-group .volume-slider {
-    padding-right: 0.5rem;
-    margin-top: 2px;
+   padding-right: 0.5rem;
+   margin-top: 2px;
 }
 
 .dramatic-rolls.setting-form .sound-option-group .volume-display {
-    width: 46px;
-    margin: 0 0.375rem;
+   width: 46px;
+   margin: 0 0.375rem;
 }
 
 .dramatic-rolls.setting-form .list-header {
-    font-size: 1.25rem;
+   font-size: 1.25rem;
 }
 
 .dramatic-rolls.setting-form .sound-option-group .sound-path-input {
-    flex: 1 1 auto;
-    max-width: 25rem;
-    margin-right: 0.5rem;
+   flex: 1 1 auto;
+   max-width: 25rem;
+   margin-right: 0.5rem;
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    direction: rtl;
-    text-align: left;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   direction: rtl;
+   text-align: left;
 }
 
 .sound-path-input[readonly] {
-    opacity: 0.8;
-    cursor: default;
+   opacity: 0.8;
+   cursor: default;
 }
 
 .sound-path-input[readonly]:focus {
-    box-shadow: none;
+   box-shadow: none;
 }
 
 .dramatic-rolls.setting-form .sound-option-group button {
-    flex: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2rem;
-    height: 1.75rem;
-    box-sizing: border-box;
-    margin-right: 0.375rem;
+   flex: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 2rem;
+   height: 1.75rem;
+   box-sizing: border-box;
+   margin-right: 0.375rem;
 }
 
 .dramatic-rolls.setting-form .add-button-wrapper {
-    width: 21rem;
-    margin: 1rem auto;
+   width: 21rem;
+   margin: 1rem auto;
 }
 
 .dramatic-rolls.setting-form .add-button-wrapper input {
-    display: none;
+   display: none;
 }
 
 .dramatic-rolls-dot-container {
    flex-grow: 1;
-   overflow:visible;
-   z-index:5000;
-   pointer-events:none;
- }
- .dramatic-rolls-dot {
+   overflow: visible;
+   z-index: 5000;
+   pointer-events: none;
+}
+.dramatic-rolls-dot {
    position: absolute;
    pointer-events: none; /*performance optimization*/
- }
+}
 
- .dramatic-rolls-confetti-emitter-container {
+.dramatic-rolls-confetti-emitter-container {
    height: 10px;
    position: absolute;
    bottom: 0;
@@ -99,4 +105,29 @@
    display: flex;
    margin-left: 5rem;
    margin-right: 5rem;
- }
+}
+
+.counter {
+   position: relative;
+   font-size: max(2rem, 1rem + 12vw);
+   font-variation-settings: "wght" var(--font-variation-weight, 600);
+}
+
+.celebrate {
+   color: transparent;
+   background-clip: text;
+   background-color: #4158d0;
+   background-size: 200% auto;
+   animation: bg 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+#animation-container {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   pointer-events: none;
+   z-index: 109;
+}
