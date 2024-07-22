@@ -1,3 +1,6 @@
+import soundEffectController from "../controllers/soundEffectController.js";
+import constants from "../../constants.js";
+
 // Based on https://codepen.io/chrisgannon/pen/oqrKNE?editors=0010
 const ufo = `
 <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="100%" width="100%">
@@ -107,6 +110,16 @@ const makeBeep = (tl) => {
 };
 
 export const ufoDropText = (text) => {
+   soundEffectController.playSound(
+      {
+         src: `modules/${constants.modName}/sounds/ufo/xfiles.mp3`,
+         volume: 0.75,
+         autoplay: true,
+         loop: false,
+      },
+      true
+   );
+
    const { ufo, ufoContainer, beam, number } = prepAnimation();
    // Sequencing
    const t1 = gsap.timeline();
@@ -122,8 +135,8 @@ export const ufoDropText = (text) => {
       .set(ufo, {
          opacity: 1,
          width: "25vw",
-         x: -200,
-         y: -200,
+         x: -250,
+         y: -250,
          rotateZ: -6,
       })
       .set(beam, { opacity: 0 })
@@ -151,6 +164,7 @@ export const ufoDropText = (text) => {
       x: 250,
       y: 0,
       duration: 1,
+      delay: 0.5,
       ease: "power2.out",
    })
       // Ease back to vertical orientation
