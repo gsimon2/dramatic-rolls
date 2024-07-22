@@ -1,5 +1,6 @@
 import soundEffectController from "../controllers/soundEffectController.js";
 import constants from "../../constants.js";
+import gsap from "/scripts/greensock/esm/all.js";
 
 // Based on https://codepen.io/chrisgannon/pen/oqrKNE?editors=0010
 const ufo = `
@@ -135,8 +136,8 @@ export const ufoDropText = (text) => {
       .set(ufo, {
          opacity: 1,
          width: "25vw",
-         x: -250,
-         y: -250,
+         x: -400,
+         y: -400,
          rotateZ: -6,
       })
       .set(beam, { opacity: 0 })
@@ -236,6 +237,5 @@ export const ufoDropText = (text) => {
 };
 
 // document.body.addEventListener("click", () => {
-//    // ufoAnimation('crit!');
-//    ufoDropText("20");
+//    // ufoDropText("20");
 // });
