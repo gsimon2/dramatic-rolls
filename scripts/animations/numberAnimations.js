@@ -1,5 +1,6 @@
 import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.npmjs.com/package/canvas-confetti
 import { getDistinct } from "../utils.js";
+import gsap from "/scripts/greensock/esm/all.js";
 
 // document.body.addEventListener("click", () => {
 //    // numberPop("20", true, false);
