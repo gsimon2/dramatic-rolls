@@ -1,5 +1,6 @@
 import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.npmjs.com/package/canvas-confetti
 import { getDistinct } from "../utils.js";
+import gsap from "/scripts/greensock/esm/all.js";
 
 // document.body.addEventListener("click", () => {
 //    // numberPop("20", true, false);
@@ -83,6 +84,7 @@ export function numberPop(num, isCrit, isFumble) {
          colors: [colorPicks[0], colorPicks[1]],
          angle: isCrit ? 90 : -90,
          scalar: 1.5,
+         zIndex: 109,
       });
    }
 

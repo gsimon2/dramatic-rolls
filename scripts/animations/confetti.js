@@ -3,6 +3,7 @@ import soundEffectController from "../controllers/soundEffectController.js";
 import constants from "../../constants.js";
 import { getDistinct, getRandomArbitrary } from "../utils.js";
 
+const zIndex = 109;
 const colors = [
    "#fbda61",
    "#ffce1f",
@@ -50,7 +51,12 @@ const getExplosionPoints = () => {
    ];
 };
 
-const fireCustomShapesConfetti = ({ shapes, soundPath, flat = false, particleCount = 100 }) => {
+const fireCustomShapesConfetti = ({
+   shapes,
+   soundPath,
+   flat = false,
+   particleCount = 100,
+}) => {
    getExplosionPoints().forEach((point, index) => {
       setTimeout(() => {
          if (soundPath) {
@@ -74,6 +80,7 @@ const fireCustomShapesConfetti = ({ shapes, soundPath, flat = false, particleCou
             scalar: 4,
             shapes: shapes,
             flat: flat,
+            zIndex: zIndex,
          });
       }, getRandomArbitrary(150, 250) * index);
    });
@@ -108,6 +115,7 @@ export const fireConfetti = () => {
             colors: getDistinct(colors, 3),
             angle: point.angle,
             scalar: 1.5,
+            zIndex: zIndex,
          });
       }, 200 * index);
    });
@@ -135,6 +143,7 @@ export const fireFireworkConfetti = () => {
             angle: 90,
             scalar: 1.5,
             shapes: ["square", "circle", "star"],
+            zIndex: zIndex,
          });
       }, getRandomArbitrary(75, 200) * index);
    });
@@ -162,7 +171,7 @@ export const fireEmojiConfetti = () => {
       ],
       soundPath: `modules/${constants.modName}/sounds/crit/magical-twinkle-sparkle-whoosh.mp3`,
       flat: false,
-      particleCount: 80
+      particleCount: 80,
    });
 
    getExplosionPoints().forEach((point, index) => {
@@ -194,6 +203,7 @@ export const fireEmojiConfetti = () => {
                confetti.shapeFromText({ text: "❤", scalar: 4 }),
             ],
             flat: false,
+            zIndex: zIndex,
          });
       }, getRandomArbitrary(150, 250) * index);
    });
