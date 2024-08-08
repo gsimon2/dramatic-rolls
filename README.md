@@ -13,10 +13,12 @@ For users of the Pathfinder 2e game system, Dramatic Rolls offers additional opt
 
 
 ### Dramatic Rolls Example
-![dramatic-rolls-example](859CBFFC-07F8-4111-9E33-5DA2D3D8D713.GIF)
+
+![dramatic-rolls-example](https://github.com/user-attachments/assets/3b82d375-62b7-4d05-96d0-f6a88f301789)
 
 ### With Dice So Nice
-![dramatic-rolls-example-dice-so-nice](D719274E-5E3A-4DDE-A918-4F0C357BF4AE.GIF)
+
+![dramatic-rolls-example-dice-so-nice](https://github.com/user-attachments/assets/7799e746-6e8b-4667-a889-c9aa4f4e7bcd)
 
 ## Features
 
