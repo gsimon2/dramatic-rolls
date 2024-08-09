@@ -12,7 +12,7 @@ import {
    fireEmojiConfetti,
    fireCrossBonesConfetti,
 } from "../animations/confetti.js";
-import { ufoDropText } from '../animations/ufoAnimations.js';
+import { ufoDropText } from "../animations/ufoAnimations.js";
 
 class Animation {
    constructor(id, name, animationFunction, playSoundEffect = true) {
@@ -62,7 +62,7 @@ class AnimationController {
             "UFO Drop Text",
             (text) => ufoDropText(text),
             false
-         )
+         ),
       ];
 
       this.fumbleAnimations = [
@@ -140,18 +140,25 @@ class AnimationController {
 
    playCriticalAnimation = (num, shouldBroadcastToOtherPlayers) => {
       const gameSettings = game.settings.get(constants.modName, "settings");
+      const soundEffect = soundEffectController.getCritSoundEffect();
       const enabledAnimations = this.criticalAnimations.filter(
          (a) =>
             gameSettings.criticalAnimations?.find((b) => b.id === a.id)
                ?.enabled ?? true
       );
+
+      // Only play sound if there are no animations enabled
+      if (enabledAnimations.length === 0) {
+         this.#playSound(soundEffect, shouldBroadcastToOtherPlayers);
+         return;
+      }
+
       const animation =
          enabledAnimations[
             Math.floor(Math.random() * enabledAnimations.length)
          ];
 
       if (animation.playSoundEffect) {
-         const soundEffect = soundEffectController.getCritSoundEffect();
          this.#playSound(soundEffect, shouldBroadcastToOtherPlayers);
       }
 
@@ -168,18 +175,25 @@ class AnimationController {
 
    playFumbleAnimation = (num, shouldBroadcastToOtherPlayers) => {
       const gameSettings = game.settings.get(constants.modName, "settings");
+      const soundEffect = soundEffectController.getFumbleSoundEffect();
       const enabledAnimations = this.fumbleAnimations.filter(
          (a) =>
             gameSettings.fumbleAnimations?.find((b) => b.id === a.id)
                ?.enabled ?? true
       );
+
+      // Only play sound if there are no animations enabled
+      if (enabledAnimations.length === 0) {
+         this.#playSound(soundEffect, shouldBroadcastToOtherPlayers);
+         return;
+      }
+
       const animation =
          enabledAnimations[
             Math.floor(Math.random() * enabledAnimations.length)
          ];
 
       if (animation.playSoundEffect) {
-         const soundEffect = soundEffectController.getFumbleSoundEffect();
          this.#playSound(soundEffect, shouldBroadcastToOtherPlayers);
       }
 
