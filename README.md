@@ -27,7 +27,10 @@ For users of the Pathfinder 2e game system, Dramatic Rolls offers additional opt
 - Visual effects including confetti and more for critical hits
 - Compatible with Dice So Nice! module
 - Configurable settings to fine-tune your experience
-- Pathfinder 2e support: Trigger effects on critical successes and failures based on degree of success, not just natural 20s and 1s
+
+## Game Systems Support
+- Pathfinder 2e: Trigger effects on critical successes and failures based on degree of success, not just natural 20s and 1s
+- GURPS: Trigger effects on critical successes and failures based on GURPS 4e rules, only for 3d6 rolls with calculated margin of success/failure.
 
 ## Installation
 
