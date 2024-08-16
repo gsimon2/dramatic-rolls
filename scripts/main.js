@@ -4,6 +4,7 @@ import {
 } from "./settings/settings.js";
 import constants from "../constants.js";
 import { initRollCollection } from "./rollCollector.js";
+import { parseFromGurpsRoll } from "./utils.js";
 import animationController from "./controllers/animationController.js";
 
 Hooks.on("init", () => {
@@ -53,6 +54,9 @@ const getIsRollOverrideCrit = (roll) => {
    ) {
       return roll.options?.degreeOfSuccess === 3;
    }
+   if (game.system.id === "gurps") {
+      return parseFromGurpsRoll(roll).isCritSuccess
+   }
    return false;
 };
 
@@ -62,6 +66,9 @@ const getIsRollOverrideFumble = (roll) => {
       game.settings.get(constants.modName, "pf2e-trigger-on-degree-of-success")
    ) {
       return roll.options?.degreeOfSuccess === 0;
+   }
+   if (game.system.id === "gurps") {
+      return parseFromGurpsRoll(roll).isCritFailure
    }
    return false;
 };
