@@ -65,8 +65,15 @@ Once installed and enabled, Dramatic Rolls will automatically add sound and visu
 If you enjoy this module, consider buying me a coffee: [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-%243-blue)](https://www.buymeacoffee.com/gsimon2)
 
 ## Contribution
+Thanks to all the contributors who have helped improve this project:
+- [Chris Maillefaud](https://github.com/chrismaille) - 1 commit
+
+(This list is automatically generated based on git history.)
+<!--  To update, run `git shortlog -sne` and update the commit counts and usernames accordingly.-->
 
 Feel free to submit issues or pull requests on the [GitHub repository](https://github.com/gsimon2/dramatic-rolls).
+
+
 
 ## License
 
