@@ -48,12 +48,12 @@ const ufo = `
 `;
 
 const prepAnimation = () => {
-   const animationId = "animation";
+   const animationId = "dramatic-rolls-animation";
    if (document.getElementById(animationId)) {
       document.getElementById(animationId).remove();
    }
 
-   const animationContainer = document.getElementById("animation-container");
+   const animationContainer = document.getElementById("dramatic-rolls-animation-container");
    const ufoContainer = document.createElement("div");
    ufoContainer.id = animationId;
    ufoContainer.innerHTML = ufo;
