@@ -103,7 +103,7 @@ class AnimationController {
 
    #setupAnimations = () => {
       const animationContainer = document.createElement("div");
-      animationContainer.id = "animation-container";
+      animationContainer.id = "dramatic-rolls-animation-container";
       document.body.appendChild(animationContainer);
    };
 

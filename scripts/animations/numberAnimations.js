@@ -49,13 +49,14 @@ const getBasicNumberStyling = (num, colorPicks) => ({
 });
 
 const prepAnimation = (className) => {
-   if (document.getElementById("animation")) {
-      document.getElementById("animation").remove();
+   const animationId = "dramatic-rolls-animation";
+   if (document.getElementById(animationId)) {
+      document.getElementById(animationId).remove();
    }
 
-   const animationContainer = document.getElementById("animation-container");
+   const animationContainer = document.getElementById("dramatic-rolls-animation-container");
    const el = document.createElement("div");
-   el.id = "animation";
+   el.id = animationId;
 
    if (className) {
       el.className = className;
@@ -71,7 +72,7 @@ const getFontSize = (num) => {
 
 // based on Confetti! https://www.kirilv.com/canvas-confetti/
 export function numberPop(num, isCrit, isFumble) {
-   const el = prepAnimation("counter celebrate");
+   const el = prepAnimation("dramatic-rolls-counter dramatic-rolls-celebrate");
    const colorPicks = getDistinct(isCrit ? happyColors : sadColors, 2);
    const t1 = gsap.timeline();
 
