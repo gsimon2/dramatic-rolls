@@ -1,0 +1,56 @@
+{
+   "dramatic-rolls": {
+      "settings": {
+         "add-sound": {
+            "name": "启用音效",
+            "label": "重击和致命失误时播放音效。"
+         },
+         "play-animations": {
+            "name": "重击和致命失误时播放动画",
+            "label": "建议在配置较低的电脑禁用此功能"
+         },
+         "configure-sounds": {
+            "name": "音效配置",
+            "label": "配置重击和致命失误时播放的音效。"
+         },
+         "configure-animations": {
+            "name": "动画配置",
+            "label": "配置重击和致命失误时播放的动画。"
+         },
+         "disable-npc-rolls": {
+            "name": "禁用NPC和GM的戏剧性掷骰",
+            "label": "让玩家尽情享受乐趣，戏剧性掷骰效果将只对玩家角色和玩家所有的角色触发。"
+         },
+         "trigger-on-public-only": {
+            "name": "仅对公开掷骰播放音效和动画",
+            "label": "如果选中，私密掷骰将不会触发音效和动画。无论此设置如何，音效和动画只会在公开掷骰时向其他玩家播放。"
+         },
+         "pf2e-trigger-on-degree-of-success": {
+            "name": "仅限PF2E - 基于成功程度触发效果",
+            "label": "如果选中，当掷骰结果超过DC值10点或更多时触发重击效果。当掷骰结果低于DC值10点或更多时触发致命失误效果"
+         }
+      },
+      "configure-sounds-settings-form": {
+         "title": "音效配置",
+         "save": "保存更改",
+         "reset": "恢复默认",
+         "playSound": "播放音效",
+         "removeSound": "移除音效",
+         "enableDisableSound": "启用/禁用音效",
+         "addCritSound": "添加重击音效",
+         "addFumbleSound": "添加致命失误音效",
+         "critical-sounds-list-title": "重击音效列表",
+         "fumble-sounds-list-title": "致命失误音效列表",
+         "soundVolume": "音量"
+      },
+      "configure-animations-settings-form": {
+         "title": "动画配置",
+         "save": "保存更改",
+         "reset": "恢复默认",
+         "playAnimation": "播放",
+         "enableDisableAnimation": "启用/禁用",
+         "critical-animations-list-title": "重击动画列表",
+         "fumble-animations-list-title": "致命失误动画列表"
+      }
+   }
+}
