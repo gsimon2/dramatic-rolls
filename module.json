@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "3.1.1",
+  "version": "3.1.2",
   "esmodules": [
     "scripts/main.js",
     "greensock/esm/all.js"
@@ -29,12 +29,12 @@
   "url": "https://github.com/gsimon2/dramatic-rolls",
   "bugs": "https://github.com/gsimon2/dramatic-rolls/issues",
   "changelog": "https://github.com/gsimon2/dramatic-rolls/releases",
-  "download": "https://github.com/gsimon2/dramatic-rolls/releases/download/3.1.1/module.zip",
-  "manifest": "https://github.com/gsimon2/dramatic-rolls/releases/download/3.1.1/module.json",
+  "download": "https://github.com/gsimon2/dramatic-rolls/releases/download/3.1.2/module.zip",
+  "manifest": "https://github.com/gsimon2/dramatic-rolls/releases/download/3.1.2/module.json",
   "readme": "https://raw.githubusercontent.com/gsimon2/dramatic-rolls/main/README.md",
   "id": "dramatic-rolls",
   "compatibility": {
     "minimum": "11",
-    "verified": "12.331"
+    "verified": "13.345"
   }
 }
