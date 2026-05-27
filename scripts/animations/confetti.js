@@ -1,4 +1,4 @@
-import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.npmjs.com/package/canvas-confetti
+import { confetti } from "./confettiLoader.js";
 import soundEffectController from "../controllers/soundEffectController.js";
 import constants from "../../constants.js";
 import { getDistinct, getRandomArbitrary } from "../utils.js";
