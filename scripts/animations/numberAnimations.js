@@ -1,4 +1,4 @@
-import confetti from "https://cdn.skypack.dev/canvas-confetti"; // https://www.npmjs.com/package/canvas-confetti
+import { confetti } from "./confettiLoader.js";
 import { getDistinct } from "../utils.js";
 import gsap from "/scripts/greensock/esm/all.js";
 
